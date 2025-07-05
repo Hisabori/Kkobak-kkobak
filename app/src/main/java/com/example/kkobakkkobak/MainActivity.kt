@@ -86,7 +86,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // showTimePickerDialog 함수를 아래 코드로 통째로 교체하세요.
     private fun showTimePickerDialog(category: String, timeTextView: TextView, statusLottieView: LottieAnimationView) {
         val calendar = Calendar.getInstance()
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
@@ -96,15 +95,7 @@ class MainActivity : AppCompatActivity() {
                 apply()
             }
             setAlarm(category, hourOfDay, minute)
-
-            // 메인 화면의 아이콘 상태는 바로 업데이트하되, 애니메이션은 재생하지 않습니다.
-            updateAlarmStatusView(category, timeTextView, statusLottieView, false)
-
-            // '알람 설정 완료!' 메시지와 함께 완료 화면을 띄웁니다.
-            val intent = Intent(this@MainActivity, CompletionActivity::class.java).apply {
-                putExtra("message", "알람 설정 완료!")
-            }
-            startActivity(intent)
+            updateAlarmStatusView(category, timeTextView, statusLottieView, true)
         }
         TimePickerDialog(this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
     }
