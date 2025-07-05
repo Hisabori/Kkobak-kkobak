@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">꼬박꼬박</string>
+    <string name="app_title">💊 투약 리마인더</string>
+
+    <string-array name="encouragement_messages">
+        <item>오늘도 건강을 향한 한 걸음, 멋져요!</item>
+        <item>꾸준함이 가장 큰 힘이에요. 응원합니다!</item>
+        <item>잊지 않고 챙기셨네요. 최고예요!</item>
+        <item>당신의 건강한 하루를 응원합니다.</item>
+        <item>스스로를 챙기는 시간, 참 소중해요.</item>
+    </string-array>
+</resources>
