@@ -1,283 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground"
     tools:context=".MainActivity">
 
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/blurView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!-- 상단 타이틀 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="꼬박꼬박"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="24dp"
-                android:text="@string/app_title"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_streak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="🔥 7일 연속 달성!" />
-
-            <!-- 아침 -->
+            <!-- 스트릭 카드 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_background"
                 android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/lottie_morning_status"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="8dp"
-                        app:lottie_rawRes="@raw/checkmark_animation"
-                        app:lottie_autoPlay="false"
-                        app:lottie_loop="false" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="아침 ☀️"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
                 <TextView
-                    android:id="@+id/tv_morning_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginStart="40dp"
-                    android:textSize="16sp"
-                    tools:text="08:30"/>
-                <LinearLayout
+                    android:text="연속 달성"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_streak"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btn_morning_set"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="시간 설정" />
-                    <Button
-                        android:id="@+id/btn_morning_cancel"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="취소" />
-                </LinearLayout>
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    tools:text="🔥 7일 연속으로 챙겼어요!" />
             </LinearLayout>
 
-            <!-- 점심 -->
+            <!-- 알람 목록 카드 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_background"
                 android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/lottie_lunch_status"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="8dp"
-                        app:lottie_rawRes="@raw/checkmark_animation"
-                        app:lottie_autoPlay="false"
-                        app:lottie_loop="false" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="점심 🍚"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/tv_lunch_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginStart="40dp"
-                    android:textSize="16sp"
-                    tools:text="설정되지 않음"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btn_lunch_set"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="시간 설정" />
-                    <Button
-                        android:id="@+id/btn_lunch_cancel"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="취소" />
-                </LinearLayout>
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <include layout="@layout/item_reminder" android:id="@+id/item_morning"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333650"/>
+                <include layout="@layout/item_reminder" android:id="@+id/item_lunch"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333650"/>
+                <include layout="@layout/item_reminder" android:id="@+id/item_dinner"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333650"/>
+                <include layout="@layout/item_reminder" android:id="@+id/item_bedtime"/>
             </LinearLayout>
 
-            <!-- 저녁 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/lottie_dinner_status"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="8dp"
-                        app:lottie_rawRes="@raw/checkmark_animation"
-                        app:lottie_autoPlay="false"
-                        app:lottie_loop="false" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="저녁 🌙"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/tv_dinner_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginStart="40dp"
-                    android:textSize="16sp"
-                    tools:text="설정되지 않음"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btn_dinner_set"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="시간 설정" />
-                    <Button
-                        android:id="@+id/btn_dinner_cancel"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="취소" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 취침 전 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/lottie_bedtime_status"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="8dp"
-                        app:lottie_rawRes="@raw/checkmark_animation"
-                        app:lottie_autoPlay="false"
-                        app:lottie_loop="false" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="취침 전 🛏️"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/tv_bedtime_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginStart="40dp"
-                    android:textSize="16sp"
-                    tools:text="설정되지 않음"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btn_bedtime_set"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="시간 설정" />
-                    <Button
-                        android:id="@+id/btn_bedtime_cancel"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="취소" />
-                </LinearLayout>
-            </LinearLayout>
-
+            <!-- 하단 버튼들 -->
             <Button
                 android:id="@+id/btn_add_log"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_marginTop="24dp"
-                android:text="오늘을 기록하기 📝"/>
-
+                android:background="@drawable/button_primary"
+                android:text="오늘 기분 기록하기"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
             <Button
                 android:id="@+id/btn_view_history"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="내 기록 보기 📖"/>
-
+                android:text="내 기록 전체 보기"
+                android:textColor="?android:attr/textColorSecondary"/>
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</LinearLayout>

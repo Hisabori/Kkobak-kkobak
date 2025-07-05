@@ -9,16 +9,12 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.airbnb.lottie.LottieAnimationView
-import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,15 +29,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         requestNotificationPermission()
-        setupBlurView()
 
         prefs = getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
         tvStreak = findViewById(R.id.tv_streak)
 
-        initView("morning", findViewById(R.id.tv_morning_time), findViewById(R.id.btn_morning_set), findViewById(R.id.btn_morning_cancel), findViewById(R.id.lottie_morning_status))
-        initView("lunch", findViewById(R.id.tv_lunch_time), findViewById(R.id.btn_lunch_set), findViewById(R.id.btn_lunch_cancel), findViewById(R.id.lottie_lunch_status))
-        initView("dinner", findViewById(R.id.tv_dinner_time), findViewById(R.id.btn_dinner_set), findViewById(R.id.btn_dinner_cancel), findViewById(R.id.lottie_dinner_status))
-        initView("bedtime", findViewById(R.id.tv_bedtime_time), findViewById(R.id.btn_bedtime_set), findViewById(R.id.btn_bedtime_cancel), findViewById(R.id.lottie_bedtime_status))
+        // 각 항목 뷰 설정 (아이콘 리소스 대신 이모지 문자열 전달)
+        setupReminderView("morning", "아침", "☀️", findViewById(R.id.item_morning))
+        setupReminderView("lunch", "점심", "🍚", findViewById(R.id.item_lunch))
+        setupReminderView("dinner", "저녁", "🌙", findViewById(R.id.item_dinner))
+        setupReminderView("bedtime", "취침 전", "🛏️", findViewById(R.id.item_bedtime))
 
         setupStreakUpdateReceiver()
 
@@ -57,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateStreakView()
-        updateAllAlarmStatusViews()
+        updateAllReminderViews()
     }
 
     override fun onDestroy() {
@@ -67,27 +63,47 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateAllAlarmStatusViews() {
-        updateAlarmStatusView("morning", findViewById(R.id.tv_morning_time), findViewById(R.id.lottie_morning_status))
-        updateAlarmStatusView("lunch", findViewById(R.id.tv_lunch_time), findViewById(R.id.lottie_lunch_status))
-        updateAlarmStatusView("dinner", findViewById(R.id.tv_dinner_time), findViewById(R.id.lottie_dinner_status))
-        updateAlarmStatusView("bedtime", findViewById(R.id.tv_bedtime_time), findViewById(R.id.lottie_bedtime_status))
+    private fun updateAllReminderViews() {
+        setupReminderView("morning", "아침", "☀️", findViewById(R.id.item_morning))
+        setupReminderView("lunch", "점심", "🍚", findViewById(R.id.item_lunch))
+        setupReminderView("dinner", "저녁", "🌙", findViewById(R.id.item_dinner))
+        setupReminderView("bedtime", "취침 전", "🛏️", findViewById(R.id.item_bedtime))
     }
 
-    private fun initView(category: String, timeTextView: TextView, setButton: Button, cancelButton: Button, statusLottieView: LottieAnimationView) {
-        updateAlarmStatusView(category, timeTextView, statusLottieView)
-        setButton.setOnClickListener {
-            showTimePickerDialog(category, timeTextView, statusLottieView)
-        }
-        cancelButton.setOnClickListener {
-            cancelAlarm(category)
-            updateAlarmStatusView(category, timeTextView, statusLottieView)
-            Toast.makeText(this, "${getCategoryKorean(category)} 알람이 취소되었습니다.", Toast.LENGTH_SHORT).show()
+    // 파라미터 타입을 String으로 변경하고, ImageView를 TextView로 변경
+    private fun setupReminderView(category: String, title: String, iconEmoji: String, itemView: View) {
+        val icon: TextView = itemView.findViewById(R.id.tv_category_icon)
+        val titleTextView: TextView = itemView.findViewById(R.id.tv_category_title)
+        val timeTextView: TextView = itemView.findViewById(R.id.tv_time)
+        val setButton: Button = itemView.findViewById(R.id.btn_set)
+
+        icon.text = iconEmoji // 이모지 설정
+        titleTextView.text = title
+
+        val hour = prefs.getInt("${category}_hour", -1)
+        val minute = prefs.getInt("${category}_minute", -1)
+
+        if (hour != -1 && minute != -1) {
+            val amPm = if (hour < 12) "오전" else "오후"
+            val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
+            timeTextView.text = String.format(Locale.KOREA, "%s %02d:%02d", amPm, displayHour, minute)
+            setButton.text = "취소"
+
+            setButton.setOnClickListener {
+                cancelAlarm(category)
+                updateAllReminderViews()
+            }
+        } else {
+            timeTextView.text = "설정되지 않음"
+            setButton.text = "설정"
+
+            setButton.setOnClickListener {
+                showTimePickerDialog(category)
+            }
         }
     }
 
-    // showTimePickerDialog 함수를 아래 코드로 통째로 교체하세요.
-    private fun showTimePickerDialog(category: String, timeTextView: TextView, statusLottieView: LottieAnimationView) {
+    private fun showTimePickerDialog(category: String) {
         val calendar = Calendar.getInstance()
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             prefs.edit().apply {
@@ -96,34 +112,14 @@ class MainActivity : AppCompatActivity() {
                 apply()
             }
             setAlarm(category, hourOfDay, minute)
+            updateAllReminderViews()
 
-            // 메인 화면의 아이콘 상태는 바로 업데이트하되, 애니메이션은 재생하지 않습니다.
-            updateAlarmStatusView(category, timeTextView, statusLottieView, false)
-
-            // '알람 설정 완료!' 메시지와 함께 완료 화면을 띄웁니다.
-            val intent = Intent(this@MainActivity, CompletionActivity::class.java).apply {
+            val intent = Intent(this, CompletionActivity::class.java).apply {
                 putExtra("message", "알람 설정 완료!")
             }
             startActivity(intent)
         }
-        TimePickerDialog(this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
-    }
-
-    private fun updateAlarmStatusView(category: String, timeTextView: TextView, statusLottieView: LottieAnimationView, playAnimation: Boolean = false) {
-        val hour = prefs.getInt("${category}_hour", -1)
-        val minute = prefs.getInt("${category}_minute", -1)
-        if (hour != -1 && minute != -1) {
-            timeTextView.text = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
-            statusLottieView.visibility = View.VISIBLE
-            if (playAnimation) {
-                statusLottieView.playAnimation()
-            } else {
-                statusLottieView.progress = 1f
-            }
-        } else {
-            timeTextView.text = "설정되지 않음"
-            statusLottieView.visibility = View.GONE
-        }
+        TimePickerDialog(this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
     }
 
     private fun setAlarm(category: String, hour: Int, minute: Int) {
@@ -156,7 +152,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-        Toast.makeText(this, "${getCategoryKorean(category)} 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun cancelAlarm(category: String) {
@@ -175,6 +170,7 @@ class MainActivity : AppCompatActivity() {
             remove("${category}_minute")
             apply()
         }
+        Toast.makeText(this, "${getCategoryKorean(category)} 알람이 취소되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateStreakView() {
@@ -187,7 +183,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (streak > 0) {
-            tvStreak.text = "🔥 $streak" + "일 연속 달성!"
+            tvStreak.text = "🔥 $streak" + "일 연속으로 챙겼어요!"
         } else {
             tvStreak.text = "🔥 꾸준히 약을 챙겨보세요!"
         }
@@ -202,18 +198,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         ContextCompat.registerReceiver(this, streakUpdateReceiver, IntentFilter("UPDATE_STREAK_ACTION"), ContextCompat.RECEIVER_NOT_EXPORTED)
-    }
-
-    private fun setupBlurView() {
-        val radius = 15f
-        val decorView = window.decorView
-        val rootView = decorView.findViewById<ViewGroup>(android.R.id.content)
-        val windowBackground = decorView.background
-        val blurView = findViewById<BlurView>(R.id.blurView)
-
-        blurView.setupWith(rootView, RenderScriptBlur(this))
-            .setFrameClearDrawable(windowBackground)
-            .setBlurRadius(radius)
     }
 
     private fun getTodayDateString(): String {
