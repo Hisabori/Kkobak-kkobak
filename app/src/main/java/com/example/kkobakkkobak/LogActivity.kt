@@ -1,6 +1,7 @@
 package com.example.kkobakkkobak
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -13,12 +14,13 @@ import java.util.*
 
 class LogActivity : AppCompatActivity() {
 
-    private var selectedMood = 0 // 1: 좋음, 2: 보통, 3: 나쁨
+    private var selectedMood = 0
     private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         db = AppDatabase.getDatabase(this)
 
@@ -55,5 +57,13 @@ class LogActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.btn_mood_neutral).alpha = 0.5f
         findViewById<ImageButton>(R.id.btn_mood_bad).alpha = 0.5f
         button.alpha = 1.0f
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

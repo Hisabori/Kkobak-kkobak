@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MedicationTakenReceiver : BroadcastReceiver() {
+
     override fun onReceive(context: Context, intent: Intent) {
         val prefs = context.getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
         val editor = prefs.edit()
@@ -35,8 +36,17 @@ class MedicationTakenReceiver : BroadcastReceiver() {
             editor.apply()
         }
 
+        // --- 스트릭 계산 로직 끝 ---
+
+        // MainActivity에 스트릭을 업데이트하라는 신호를 보냄
         val updateIntent = Intent("UPDATE_STREAK_ACTION")
         context.sendBroadcast(updateIntent)
+
+        // --- 새로 만든 완료 화면을 띄웁니다 ---
+        val completionIntent = Intent(context, CompletionActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra("message", "투약 완료!")
+        }
     }
 
     private fun getTodayDateString(): String {
