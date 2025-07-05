@@ -1,12 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -16,10 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://jitpack.io")
-
+        // BlurView 라이브러리를 위한 저장소
+        maven { url = uri("https://jitpack.io") }
     }
 }
-
-rootProject.name = "꼬박꼬박"
+rootProject.name = "2" // 사용자님의 프로젝트 이름
 include(":app")

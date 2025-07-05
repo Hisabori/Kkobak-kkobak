@@ -19,7 +19,6 @@ import eightbitlab.com.blurview.RenderScriptBlur
 import java.text.SimpleDateFormat
 import java.util.*
 
-// MainActivity 클래스 시작
 class MainActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferences
@@ -42,6 +41,10 @@ class MainActivity : AppCompatActivity() {
         initView("bedtime", findViewById(R.id.tv_bedtime_time), findViewById(R.id.btn_bedtime_set), findViewById(R.id.btn_bedtime_cancel))
 
         setupStreakUpdateReceiver()
+
+        findViewById<Button>(R.id.btn_add_log).setOnClickListener {
+            startActivity(Intent(this, LogActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -51,7 +54,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(streakUpdateReceiver)
+        // 앱이 종료될 때 리시버 등록 해제 (메모리 누수 방지)
+        streakUpdateReceiver?.let {
+            unregisterReceiver(it)
+        }
     }
 
     private fun initView(category: String, timeTextView: TextView, setButton: Button, cancelButton: Button) {
@@ -97,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             this, getRequestCode(category), intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, hour)
@@ -106,6 +113,7 @@ class MainActivity : AppCompatActivity() {
                 add(Calendar.DATE, 1)
             }
         }
+
         try {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
             Toast.makeText(this, "${getCategoryKorean(category)} 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
@@ -157,12 +165,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val intentFilter = IntentFilter("UPDATE_STREAK_ACTION")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(streakUpdateReceiver, intentFilter, RECEIVER_EXPORTED)
-        } else {
-            registerReceiver(streakUpdateReceiver, intentFilter)
-        }
+        ContextCompat.registerReceiver(this, streakUpdateReceiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     private fun setupBlurView() {
@@ -209,4 +212,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-} // MainActivity 클래스 끝
+}

@@ -26,8 +26,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".LogActivity" />
+
         <receiver
             android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".MedicationTakenReceiver"
             android:enabled="true"
             android:exported="false" />
 
