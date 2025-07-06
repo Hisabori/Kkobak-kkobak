@@ -1,6 +1,7 @@
 package com.example.kkobakkkobak
 
 import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
@@ -8,8 +9,11 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,11 +37,11 @@ class MainActivity : AppCompatActivity() {
         prefs = getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
         tvStreak = findViewById(R.id.tv_streak)
 
-        // 각 항목 뷰 설정 (아이콘 리소스 대신 이모지 문자열 전달)
-        setupReminderView("morning", "아침", "☀️", findViewById(R.id.item_morning))
-        setupReminderView("lunch", "점심", "🍚", findViewById(R.id.item_lunch))
-        setupReminderView("dinner", "저녁", "🌙", findViewById(R.id.item_dinner))
-        setupReminderView("bedtime", "취침 전", "🛏️", findViewById(R.id.item_bedtime))
+        // 각 항목 뷰 설정 (ID를 고유하게 변경했습니다.)
+        setupReminderView("morning", "아침", "☀️", findViewById(R.id.item_morning_alarm_layout))
+        setupReminderView("lunch", "점심", "🍚", findViewById(R.id.item_lunch_alarm_layout))
+        setupReminderView("dinner", "저녁", "🌙", findViewById(R.id.item_dinner_alarm_layout))
+        setupReminderView("bedtime", "취침 전", "🛏️", findViewById(R.id.item_bedtime_alarm_layout))
 
         setupStreakUpdateReceiver()
 
@@ -64,29 +68,40 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateAllReminderViews() {
-        setupReminderView("morning", "아침", "☀️", findViewById(R.id.item_morning))
-        setupReminderView("lunch", "점심", "🍚", findViewById(R.id.item_lunch))
-        setupReminderView("dinner", "저녁", "🌙", findViewById(R.id.item_dinner))
-        setupReminderView("bedtime", "취침 전", "🛏️", findViewById(R.id.item_bedtime))
+        // UI를 새로고침할 때도 변경된 ID로 뷰를 찾아야 합니다.
+        setupReminderView("morning", "아침", "☀️", findViewById(R.id.item_morning_alarm_layout))
+        setupReminderView("lunch", "점심", "🍚", findViewById(R.id.item_lunch_alarm_layout))
+        setupReminderView("dinner", "저녁", "🌙", findViewById(R.id.item_dinner_alarm_layout))
+        setupReminderView("bedtime", "취침 전", "🛏️", findViewById(R.id.item_bedtime_alarm_layout))
     }
 
-    // 파라미터 타입을 String으로 변경하고, ImageView를 TextView로 변경
-    private fun setupReminderView(category: String, title: String, iconEmoji: String, itemView: View) {
-        val icon: TextView = itemView.findViewById(R.id.tv_category_icon)
-        val titleTextView: TextView = itemView.findViewById(R.id.tv_category_title)
-        val timeTextView: TextView = itemView.findViewById(R.id.tv_time)
-        val setButton: Button = itemView.findViewById(R.id.btn_set)
+    private fun setupReminderView(
+        category: String,
+        title: String,
+        iconEmoji: String,
+        itemView: View // 개별 알람 항목의 부모 뷰
+    ) {
+        // 각 카테고리에 맞는 고유한 ID를 사용하여 뷰를 찾습니다.
+        val icon: TextView = itemView.findViewById(resources.getIdentifier("tv_category_icon_${category}", "id", packageName))
+        val titleTextView: TextView = itemView.findViewById(resources.getIdentifier("tv_category_title_${category}", "id", packageName))
+        val timeTextView: TextView = itemView.findViewById(resources.getIdentifier("tv_time_${category}", "id", packageName))
+        val setButton: Button = itemView.findViewById(resources.getIdentifier("btn_set_${category}", "id", packageName))
+        val medNameTextView: TextView = itemView.findViewById(resources.getIdentifier("tv_med_name_${category}", "id", packageName))
+        val setMedNameButton: Button = itemView.findViewById(resources.getIdentifier("btn_set_med_name_${category}", "id", packageName))
 
-        icon.text = iconEmoji // 이모지 설정
+
+        icon.text = iconEmoji
         titleTextView.text = title
 
         val hour = prefs.getInt("${category}_hour", -1)
         val minute = prefs.getInt("${category}_minute", -1)
+        val savedMedName = prefs.getString("${category}_med_name", "미설정")
 
         if (hour != -1 && minute != -1) {
             val amPm = if (hour < 12) "오전" else "오후"
             val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
-            timeTextView.text = String.format(Locale.KOREA, "%s %02d:%02d", amPm, displayHour, minute)
+            timeTextView.text =
+                String.format(Locale.KOREA, "%s %02d:%02d", amPm, displayHour, minute)
             setButton.text = "취소"
 
             setButton.setOnClickListener {
@@ -101,6 +116,47 @@ class MainActivity : AppCompatActivity() {
                 showTimePickerDialog(category)
             }
         }
+
+        medNameTextView.text = savedMedName
+        setMedNameButton.setOnClickListener {
+            showMedicationNameInputDialog(category, savedMedName)
+        }
+    }
+
+    private fun showMedicationNameInputDialog(category: String, currentMedName: String?) {
+        val inputEditText = EditText(this@MainActivity).apply {
+            inputType = InputType.TYPE_CLASS_TEXT
+            hint = "약 이름을 입력하세요 (예: 웰부트린, 콘서타)"
+            setText(currentMedName.takeIf { it != "미설정" } ?: "")
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("${getCategoryKorean(category)} 약 이름 설정")
+            .setView(inputEditText)
+            .setPositiveButton("저장") { dialog, _ ->
+                val newMedName = inputEditText.text.toString().trim()
+                prefs.edit().apply {
+                    putString("${category}_med_name", newMedName.ifEmpty { "미설정" })
+                    apply()
+                }
+                val hour = prefs.getInt("${category}_hour", -1)
+                val minute = prefs.getInt("${category}_minute", -1)
+                if (hour != -1 && minute != -1) {
+                    // 약 이름 변경 시에도 알람을 재설정하여 새로운 약 이름을 AlarmReceiver로 전달합니다.
+                    setAlarm(category, hour, minute, newMedName.ifEmpty { "미설정" })
+                }
+                updateAllReminderViews()
+                Toast.makeText(
+                    this,
+                    "${getCategoryKorean(category)} 약 이름이 저장되었습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun showTimePickerDialog(category: String) {
@@ -111,7 +167,10 @@ class MainActivity : AppCompatActivity() {
                 putInt("${category}_minute", minute)
                 apply()
             }
-            setAlarm(category, hourOfDay, minute)
+
+            val medName = prefs.getString("${category}_med_name", "미설정")
+
+            setAlarm(category, hourOfDay, minute, medName)
             updateAllReminderViews()
 
             val intent = Intent(this, CompletionActivity::class.java).apply {
@@ -119,10 +178,16 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
-        TimePickerDialog(this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+        TimePickerDialog(
+            this,
+            timeSetListener,
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false
+        ).show()
     }
 
-    private fun setAlarm(category: String, hour: Int, minute: Int) {
+    private fun setAlarm(category: String, hour: Int, minute: Int, medName: String?) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
@@ -135,10 +200,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val intent = Intent(this, AlarmReceiver::class.java).putExtra("category", category)
+        Log.d("MainActivity", "Setting alarm for category: $category, medName: '$medName'")
+
+        val intent = Intent(this, AlarmReceiver::class.java).apply {
+            putExtra("category", category)
+            putExtra("medName", medName)
+        }
+
         val pendingIntent = PendingIntent.getBroadcast(
-            this, getRequestCode(category), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            this,
+            getRequestCode(category),
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val calendar = Calendar.getInstance().apply {
@@ -152,6 +225,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        Log.d("MainActivity", "Alarm set for $category at ${hour}:${minute}")
     }
 
     private fun cancelAlarm(category: String) {
@@ -164,10 +238,12 @@ class MainActivity : AppCompatActivity() {
         pendingIntent?.let {
             alarmManager.cancel(it)
             it.cancel()
+            Log.d("MainActivity", "Cancelled alarm for $category")
         }
         prefs.edit().apply {
             remove("${category}_hour")
             remove("${category}_minute")
+            remove("${category}_med_name")
             apply()
         }
         Toast.makeText(this, "${getCategoryKorean(category)} 알람이 취소되었습니다.", Toast.LENGTH_SHORT).show()
@@ -213,11 +289,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getRequestCode(category: String): Int = when (category) {
-        "morning" -> 101; "lunch" -> 102; "dinner" -> 103; "bedtime" -> 104; else -> 0
+        "morning" -> 101
+        "lunch" -> 102
+        "dinner" -> 103
+        "bedtime" -> 104
+        else -> 0
     }
 
     private fun getCategoryKorean(category: String): String = when (category) {
-        "morning" -> "아침"; "lunch" -> "점심"; "dinner" -> "저녁"; "bedtime" -> "취침 전"; else -> ""
+        "morning" -> "아침"
+        "lunch" -> "점심"
+        "dinner" -> "저녁"
+        "bedtime" -> "취침 전"
+        else -> ""
     }
 
     private val requestPermissionLauncher =

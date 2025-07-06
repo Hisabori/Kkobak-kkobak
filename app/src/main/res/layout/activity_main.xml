@@ -1,100 +1,404 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?android:attr/windowBackground"
+    android:padding="16dp"
+    android:background="#131320"
     tools:context=".MainActivity">
 
-    <!-- 상단 타이틀 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="꼬박꼬박"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"/>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="꾸박꾸박"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_streak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔥 꾸준히 약을 챙겨보세요!"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp"/>
 
         <LinearLayout
+            android:id="@+id/item_morning_alarm_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_corner_card">
 
-            <!-- 스트릭 카드 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/card_background"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
+                    android:id="@+id/tv_category_icon_morning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="연속 달성"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"/>
+                    android:textSize="24sp"
+                    android:text="☀️" />
 
                 <TextView
-                    android:id="@+id/tv_streak"
+                    android:id="@+id/tv_category_title_morning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    tools:text="🔥 7일 연속으로 챙겼어요!" />
+                    android:layout_marginStart="8dp"
+                    android:text="아침"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_time_morning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textSize="18sp"
+                    android:text="설정되지 않음"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_morning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="설정"
+                    android:backgroundTint="#6200EE"
+                    android:textColor="#FFFFFF"/>
+
             </LinearLayout>
 
-            <!-- 알람 목록 카드 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/card_background"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
 
-                <include layout="@layout/item_reminder" android:id="@+id/item_morning"/>
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333650"/>
-                <include layout="@layout/item_reminder" android:id="@+id/item_lunch"/>
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333650"/>
-                <include layout="@layout/item_reminder" android:id="@+id/item_dinner"/>
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333650"/>
-                <include layout="@layout/item_reminder" android:id="@+id/item_bedtime"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="약 이름: "
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_med_name_morning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="미설정"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_med_name_morning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="약 이름 설정"
+                    android:backgroundTint="#03DAC5"
+                    android:textColor="#FFFFFF"/>
             </LinearLayout>
+        </LinearLayout>
 
-            <!-- 하단 버튼들 -->
-            <Button
-                android:id="@+id/btn_add_log"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_primary"
-                android:text="오늘 기분 기록하기"
-                android:textColor="@color/white"
-                android:textStyle="bold"/>
-            <Button
-                android:id="@+id/btn_view_history"
-                style="@style/Widget.Material3.Button.TextButton"
+        <LinearLayout
+            android:id="@+id/item_lunch_alarm_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_corner_card">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_category_icon_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:text="🍚" />
+
+                <TextView
+                    android:id="@+id/tv_category_title_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    android:text="점심"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_time_lunch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textSize="18sp"
+                    android:text="설정되지 않음"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="설정"
+                    android:backgroundTint="#6200EE"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:text="내 기록 전체 보기"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="약 이름: "
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_med_name_lunch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="미설정"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_med_name_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="약 이름 설정"
+                    android:backgroundTint="#03DAC5"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_dinner_alarm_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_corner_card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_category_icon_dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:text="🌙" />
+
+                <TextView
+                    android:id="@+id/tv_category_title_dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    android:text="저녁"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_time_dinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textSize="18sp"
+                    android:text="설정되지 않음"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="설정"
+                    android:backgroundTint="#6200EE"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="약 이름: "
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_med_name_dinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="미설정"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_med_name_dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="약 이름 설정"
+                    android:backgroundTint="#03DAC5"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_bedtime_alarm_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_corner_card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_category_icon_bedtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:text="🛏️" />
+
+                <TextView
+                    android:id="@+id/tv_category_title_bedtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    android:text="취침 전"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_time_bedtime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textSize="18sp"
+                    android:text="설정되지 않음"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_bedtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="설정"
+                    android:backgroundTint="#6200EE"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="약 이름: "
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/tv_med_name_bedtime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="미설정"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/btn_set_med_name_bedtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="약 이름 설정"
+                    android:backgroundTint="#03DAC5"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그 추가"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FF6F00"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/btn_view_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그 기록 보기"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#00C853"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+</ScrollView>
