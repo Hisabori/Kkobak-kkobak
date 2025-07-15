@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 기존 색상 유지 -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="toss_blue">#0064FF</color>
-    <color name="light_gray">#F2F4F6</color>
-    <color name="dark_gray">#191919</color>
+    <!-- 사용자 정의 SmartThings 스타일 색상 -->
+    <color name="gradient_blue_start">#2995F6</color> <!-- 하늘색 -->
+    <color name="gradient_blue_end">#165BAA</color>   <!-- 진한 파랑 -->
+    <color name="single_blue">#1A73E8</color>         <!-- 단일 파랑 (액센트) -->
+
+    <color name="text_primary_white">#FFFFFF</color>
+    <color name="text_secondary_light_grey">#E0E0E0</color>
+    <color name="card_background_dark_blue">#165BAA</color>
+    <color name="button_background_translucent_white">#33FFFFFF</color> <!-- #FFFFFF with 20% opacity -->
+    <color name="button_text_blue">#1A73E8</color>
+
+    <!-- 상태별 아이콘 색상 -->
+    <color name="icon_mood_yellow">#FFEB3B</color> <!-- 노랑 -->
+    <color name="icon_grey">#BDBDBD</color>       <!-- 회색 -->
+
+    <!-- 기존 색상 매핑 (필요시 조정) -->
+    <color name="background_grey_light">#F5F5F5</color> <!-- 기존 배경색 (SmartThings 스타일로 대체) -->
+    <color name="green">#4CAF50</color> <!-- 초록 -->
+    <color name="icon_blue">#1A73E8</color> <!-- 액센트 블루와 동일 -->
+    <color name="icon_green">#4CAF50</color> <!-- 초록 -->
+    <color name="mood_good">#4CAF50</color> <!-- 초록 -->
+    <color name="orange">#FF9800</color> <!-- 주황 -->
+    <color name="red">#F44336</color> <!-- 경고/빨강 -->
+    <color name="text_black">#000000</color> <!-- 검정 -->
+    <color name="text_grey">#9E9E9E</color> <!-- 회색 -->
+    <color name="button_primary">#3F51B5</color>
+
+    <!-- bottom_nav_item_colors 선택자 정의는 이 파일에 포함되지 않습니다.
+         app/src/main/res/color/bottom_nav_item_colors.xml 에 별도로 정의되어야 합니다. -->
 </resources>

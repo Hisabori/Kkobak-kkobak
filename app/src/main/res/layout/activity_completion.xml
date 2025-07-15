@@ -7,7 +7,7 @@
     android:background="?attr/scrimBackground"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".CompletionActivity">
+    tools:context=".ui.completion.CompletionActivity">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/completion_animation_view"

@@ -1,12 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">꼬박꼬박</string>
-    <string name="app_title">💊 투약 리마인더</string>
+    <!-- 앱 이름 및 숏컷 -->
+    <string name="app_name">꾸박꾸박</string>
+    <string name="shortcut_add_log_long">새로운 기록 추가 (길게)</string>
+    <string name="shortcut_add_log_short">기록 추가</string>
+    <string name="shortcut_view_history_long">과거 기록 보기 (길게)</string>
+    <string name="shortcut_view_history_short">기록 보기</string>
 
+    <!-- 메시지 및 버튼 텍스트 -->
+    <string name="today_streak_message">🔥 꾸준히 약을 챙겨보세요!</string>
+    <string name="set_alarm_button">설정</string>
+    <string name="set_med_name_button">약 이름 설정</string>
+    <string name="med_name_default">미설정</string>
+    <string name="time_not_set">설정되지 않음</string>
+    <string name="add_log_button">로그 추가</string>
+    <string name="view_history_button">로그 기록 보기</string>
+
+    <!-- 시간대 카테고리 -->
+    <string name="morning_category">아침</string>
+    <string name="lunch_category">점심</string>
+    <string name="dinner_category">저녁</string>
+    <string name="bedtime_category">취침 전</string>
+
+    <!-- 기록 화면 -->
+    <string name="record_screen_title">기록</string>
+    <string name="today_record_section_title">오늘의 기록</string>
+    <string name="emotion_label">감정</string>
+    <string name="sleep_time_label">수면 시간</string>
+    <string name="sleep_time_hint">예: 7시간 30분</string>
+    <string name="dosage_label">복용량</string>
+    <string name="dosage_hint">예: 아침 1알, 저녁 2알</string>
+    <string name="memo_label">메모</string>
+    <string name="memo_hint">오늘 하루를 기록하세요...</string>
+    <string name="record_button">기록하기</string>
+    <string name="mood_report_title">기분 리포트</string>
+    <string name="today_medication_status" />
+    <string name="morning_medication_taken" />
+    <string name="time_morning" />
+    <string name="lunch_medication_pending" />
+    <string name="time_lunch" />
+    <string name="dinner_medication_skipped" />
+    <string name="time_dinner" />
+    <string name="bedtime_medication_pending" />
+    <string name="time_bedtime" />
+    <string name="quick_actions" />
+    <string name="add_log_shortcut" />
+    <string name="view_history_shortcut" />
+    <string name="mood_report" />
+    <string name="mood_good_today" />
+    <string name="last_recorded" />
+    <string name="show_all_alarms" />
+
+    <!-- 새로운 내비게이션 항목 -->
+    <string name="navigation_home_title">홈</string>
+    <string name="navigation_medication_title">투약</string>
+    <string name="navigation_mood_title">기분</string>
+    <string name="navigation_path_title">경로</string>
+    <string name="navigation_settings_title">설정</string>
+    <string name="navigation_development_title">계발중</string>
+
+    <!-- 격려 메시지 배열 -->
     <string-array name="encouragement_messages">
-        <item>오늘도 건강을 향한 한 걸음, 멋져요!</item>
-        <item>꾸준함이 가장 큰 힘이에요. 응원합니다!</item>
-        <item>잊지 않고 챙기셨네요. 최고예요!</item>
-        <item>당신의 건강한 하루를 응원합니다.</item>
-        <item>스스로를 챙기는 시간, 참 소중해요.</item>
+        <item>잊지 말고 꼭 챙겨 드세요!</item>
+        <item>오늘도 건강한 하루!</item>
+        <item>약 먹고 힘내세요!</item>
+        <item>규칙적인 복용이 중요해요!</item>
     </string-array>
 </resources>

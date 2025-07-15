@@ -1,3 +1,5 @@
+// settings.gradle.kts
+
 pluginManagement {
     repositories {
         google()
@@ -10,9 +12,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // BlurView 라이브러리를 위한 저장소
-        maven { url = uri("https://jitpack.io") }
+        // Kakao SDK Repository
+        maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
-rootProject.name = "2" // 사용자님의 프로젝트 이름
+
+rootProject.name = "kkobakkobak"
+// ✅ 이 부분이 수정된 핵심! 줄바꿈하고 문법을 명확히 했어.
 include(":app")
