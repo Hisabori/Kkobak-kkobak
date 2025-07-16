@@ -61,9 +61,9 @@
 
     <!-- 격려 메시지 배열 -->
     <string-array name="encouragement_messages">
-        <item>잊지 말고 꼭 챙겨 드세요!</item>
-        <item>오늘도 건강한 하루!</item>
-        <item>약 먹고 힘내세요!</item>
-        <item>규칙적인 복용이 중요해요!</item>
+        <item>오늘도 당신의 건강을 응원해요!</item>
+        <item>꾸준함 속에 건강이 자라요 :)</item>
+        <item>건강을 위한 소중한 습관, 잊지 마세요!</item>
+        <item>오늘도 빛나는 당신, 약 챙기기도 잊지 마세요!</item>
     </string-array>
 </resources>

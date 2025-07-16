@@ -10,8 +10,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- 사용자 정의 SmartThings 스타일 색상 -->
-    <color name="gradient_blue_start">#2995F6</color> <!-- 하늘색 -->
-    <color name="gradient_blue_end">#165BAA</color>   <!-- 진한 파랑 -->
+    <color name="gradient_blue_start">#FF9A9E</color> <!-- 파스텔 핑크 -->
+    <color name="gradient_blue_end">#FAD0C4</color>   <!-- 부드러운 피치 -->
     <color name="single_blue">#1A73E8</color>         <!-- 단일 파랑 (액센트) -->
 
     <color name="text_primary_white">#FFFFFF</color>
