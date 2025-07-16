@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.example.kkobakkobak.R
 import com.example.kkobakkobak.alarm.AlarmScheduler
 import com.example.kkobakkobak.databinding.FragmentMedicationBinding
 import com.example.kkobakkobak.data.model.MedicationReminder
+import com.example.kkobakkobak.ui.medication.MedicationHistoryActivity
 import java.util.Calendar
 
 class MedicationFragment : Fragment() {
@@ -41,6 +43,10 @@ class MedicationFragment : Fragment() {
         setupInitialReminders()
         setupRecyclerView()
         updateReminderDisplay()
+
+        binding.tvViewHistory.setOnClickListener {
+            startActivity(Intent(requireContext(), MedicationHistoryActivity::class.java))
+        }
     }
 
     private fun setupInitialReminders() {
@@ -122,7 +128,11 @@ class MedicationFragment : Fragment() {
                         add(Calendar.DATE, 1)
                     }
                 }
-                alarmScheduler.scheduleAlarm(alarmTime.timeInMillis, reminder.medicationName)
+                alarmScheduler.scheduleAlarm(
+                    alarmTime.timeInMillis,
+                    reminder.category,
+                    reminder.medicationName
+                )
 
                 updateReminderDisplay()
                 Toast.makeText(requireContext(), "${reminder.category} 알람이 ${selectedHour}시 ${selectedMinute}분으로 설정되었습니다.", Toast.LENGTH_SHORT).show()

@@ -5,11 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.kkobakkobak.data.dao.MedicationLogDao
+import com.example.kkobakkobak.data.dao.MedicationIntakeDao
 import com.example.kkobakkobak.data.model.MedicationLog
+import com.example.kkobakkobak.data.model.MedicationIntake
 
-@Database(entities = [MedicationLog::class], version = 1 , exportSchema = false)
+@Database(
+    entities = [MedicationLog::class, MedicationIntake::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun medicationLogDao(): MedicationLogDao
+    abstract fun medicationIntakeDao(): MedicationIntakeDao
 
     companion object {
         @Volatile

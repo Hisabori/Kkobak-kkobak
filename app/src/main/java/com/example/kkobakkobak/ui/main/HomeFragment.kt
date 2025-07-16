@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
 import com.example.kkobakkobak.databinding.FragmentHomeBinding
+import com.example.kkobakkobak.ui.log.LogActivity
+import com.example.kkobakkobak.ui.history.LogHistoryActivity
+import com.example.kkobakkobak.ui.record.RecordActivity
 import com.example.kkobakkobak.ui.history.LogHistoryActivity
 import com.example.kkobakkobak.ui.log.LogActivity
 import com.example.kkobakkobak.ui.record.RecordActivity

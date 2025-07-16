@@ -3,22 +3,37 @@ package com.example.kkobakkobak.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.kkobakkobak.alarm.AlarmScheduler // 알람 스케줄러
-import com.example.kkobakkobak.receiver.AlarmReceiver // AlarmReceiver (필요하다면)
+import com.example.kkobakkobak.alarm.AlarmScheduler
+import java.util.Calendar
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            // 부팅 완료 시 알람 재설정 로직
+            val prefs = context.getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
             val alarmScheduler = AlarmScheduler(context)
-            // 모든 기존 알람을 다시 스케줄링해야 합니다.
-            // 여기서는 간단히 예시로 모든 알람을 재설정하는 코드를 넣지만,
-            // 실제 앱에서는 저장된 알람 목록을 불러와서 각각 재설정해야 합니다.
-            // 예를 들어, SharedPreferences나 데이터베이스에서 알람 정보를 불러와서 재설정.
+            val categories = listOf("morning", "lunch", "dinner", "bedtime")
+            val now = Calendar.getInstance()
 
-            // AlarmScheduler에 모든 알람을 재설정하는 메서드를 추가하는 것이 더 효율적입니다.
-            // 현재 AlarmScheduler에 개별 스케줄링만 있으므로, 여기서는 예시를 생략합니다.
-            // 실제 구현에서는 앱의 모든 알람 데이터를 불러와서 for 문 등으로 재스케줄링해야 합니다.
+            categories.forEach { category ->
+                val hour = prefs.getInt("${category}_hour", -1)
+                val minute = prefs.getInt("${category}_minute", -1)
+                val active = prefs.getBoolean("${category}_active", false)
+                val medName = prefs.getString("${category}_med_name", "미설정") ?: "미설정"
+
+                if (hour != -1 && minute != -1 && active) {
+                    val alarmTime = Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, hour)
+                        set(Calendar.MINUTE, minute)
+                        set(Calendar.SECOND, 0)
+                        if (before(now)) add(Calendar.DATE, 1)
+                    }
+                    alarmScheduler.scheduleAlarm(
+                        alarmTime.timeInMillis,
+                        category,
+                        medName
+                    )
+                }
+            }
         }
     }
 }
