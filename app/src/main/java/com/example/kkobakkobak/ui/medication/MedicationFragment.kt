@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.example.kkobakkobak.R
 import com.example.kkobakkobak.alarm.AlarmScheduler
 import com.example.kkobakkobak.databinding.FragmentMedicationBinding
 import com.example.kkobakkobak.data.model.MedicationReminder
+import com.example.kkobakkobak.ui.medication.MedicationHistoryActivity
 import java.util.Calendar
 
 class MedicationFragment : Fragment() {
@@ -41,6 +43,10 @@ class MedicationFragment : Fragment() {
         setupInitialReminders()
         setupRecyclerView()
         updateReminderDisplay()
+
+        binding.tvViewHistory.setOnClickListener {
+            startActivity(Intent(requireContext(), MedicationHistoryActivity::class.java))
+        }
     }
 
     private fun setupInitialReminders() {
