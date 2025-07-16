@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun playTypewriterEffectAndShowMainContent() {
-        val fullText = "꾸박꾸박"
+        val fullText = "꾸준함이 빛나는 공간, 꾸박꾸박"
         appTitleTypewriter.text = ""
         appTitleTypewriter.visibility = View.VISIBLE
 
