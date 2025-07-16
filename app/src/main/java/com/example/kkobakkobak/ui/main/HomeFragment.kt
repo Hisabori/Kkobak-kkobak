@@ -10,6 +10,10 @@ import com.example.kkobakkobak.databinding.FragmentHomeBinding
 import com.example.kkobakkobak.ui.log.LogActivity
 import com.example.kkobakkobak.ui.history.LogHistoryActivity
 import com.example.kkobakkobak.ui.record.RecordActivity
+import com.example.kkobakkobak.ui.history.LogHistoryActivity
+import com.example.kkobakkobak.ui.log.LogActivity
+import com.example.kkobakkobak.ui.record.RecordActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -35,6 +39,11 @@ class HomeFragment : Fragment() {
 
         binding.btnRecordMood.setOnClickListener {
             startActivity(Intent(requireContext(), RecordActivity::class.java))
+        }
+
+        binding.btnViewMoodDetails.setOnClickListener {
+            val nav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+            nav?.selectedItemId = R.id.navigation_mood
         }
     }
 

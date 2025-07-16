@@ -43,6 +43,10 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <activity android:name=".ui.log.LogActivity" />
+        <activity android:name=".ui.history.LogHistoryActivity" />
+        <activity android:name=".ui.record.RecordActivity" />
+        <activity android:name=".ui.completion.CompletionActivity" />
     </application>
 
 </manifest>

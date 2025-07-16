@@ -10,13 +10,13 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- 사용자 정의 SmartThings 스타일 색상 -->
-    <color name="gradient_blue_start">#FF9A9E</color> <!-- 파스텔 핑크 -->
-    <color name="gradient_blue_end">#FAD0C4</color>   <!-- 부드러운 피치 -->
-    <color name="single_blue">#1A73E8</color>         <!-- 단일 파랑 (액센트) -->
+    <color name="gradient_blue_start">#E3F2FD</color> <!-- 연한 하늘색 -->
+    <color name="gradient_blue_end">#BBDEFB</color>   <!-- 밝은 파랑 -->
+    <color name="single_blue">#3182F6</color>         <!-- Toss 스타일 블루 -->
 
     <color name="text_primary_white">#FFFFFF</color>
     <color name="text_secondary_light_grey">#E0E0E0</color>
-    <color name="card_background_dark_blue">#165BAA</color>
+    <color name="card_background_dark_blue">#FFFFFF</color>
     <color name="button_background_translucent_white">#33FFFFFF</color> <!-- #FFFFFF with 20% opacity -->
     <color name="button_text_blue">#1A73E8</color>
 
@@ -34,7 +34,7 @@
     <color name="red">#F44336</color> <!-- 경고/빨강 -->
     <color name="text_black">#000000</color> <!-- 검정 -->
     <color name="text_grey">#9E9E9E</color> <!-- 회색 -->
-    <color name="button_primary">#3F51B5</color>
+    <color name="button_primary">#3182F6</color>
 
     <!-- bottom_nav_item_colors 선택자 정의는 이 파일에 포함되지 않습니다.
          app/src/main/res/color/bottom_nav_item_colors.xml 에 별도로 정의되어야 합니다. -->

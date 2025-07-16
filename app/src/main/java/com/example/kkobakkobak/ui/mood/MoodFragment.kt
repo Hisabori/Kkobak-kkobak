@@ -5,21 +5,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.kkobakkobak.R // 리소스 R 클래스
+import android.content.Intent
+import com.example.kkobakkobak.R
+import com.example.kkobakkobak.databinding.FragmentMoodBinding
+import com.example.kkobakkobak.ui.history.LogHistoryActivity
+import com.example.kkobakkobak.ui.log.LogActivity
+import com.example.kkobakkobak.ui.record.RecordActivity
 
 class MoodFragment : Fragment() {
+
+    private var _binding: FragmentMoodBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // 이 프래그먼트의 레이아웃을 인플레이트합니다.
-        // 만약 fragment_mood.xml 레이아웃 파일이 있다면 R.layout.fragment_mood로 변경해주세요.
-        return inflater.inflate(R.layout.fragment_development, container, false) // 임시로 development 프래그먼트 레이아웃 사용
+        _binding = FragmentMoodBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // 여기에 기분 기록/관리 화면에 필요한 UI 초기화 및 로직을 추가합니다.
+        binding.btnAddLogMoodTab.setOnClickListener {
+            startActivity(Intent(requireContext(), LogActivity::class.java))
+        }
+
+        binding.btnViewHistoryMoodTab.setOnClickListener {
+            startActivity(Intent(requireContext(), LogHistoryActivity::class.java))
+        }
+
+        binding.btnRecordMood.setOnClickListener {
+            startActivity(Intent(requireContext(), RecordActivity::class.java))
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
