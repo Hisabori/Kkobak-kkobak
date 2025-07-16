@@ -11,8 +11,8 @@ class AlarmScheduler(private val context: Context) {
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    fun scheduleAlarm(timeInMillis: Long, medName: String) {
-        val notificationId = medName.hashCode()
+    fun scheduleAlarm(timeInMillis: Long, category: String, medName: String) {
+        val notificationId = category.hashCode()
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("MEDICATION_NAME", medName)
             putExtra("NOTIFICATION_ID", notificationId)

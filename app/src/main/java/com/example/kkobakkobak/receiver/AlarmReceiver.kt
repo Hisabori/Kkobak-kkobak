@@ -8,7 +8,7 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.alarm.AlarmScheduler
-import com.example.kkobakkobak.ui.main.MainActivity // 이 줄 추가!
+import com.example.kkobakkobak.ui.main.MainActivity
 import android.os.Build
 
 class AlarmReceiver : BroadcastReceiver() {

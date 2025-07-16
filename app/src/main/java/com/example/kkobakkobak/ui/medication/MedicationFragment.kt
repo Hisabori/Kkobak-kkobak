@@ -128,7 +128,11 @@ class MedicationFragment : Fragment() {
                         add(Calendar.DATE, 1)
                     }
                 }
-                alarmScheduler.scheduleAlarm(alarmTime.timeInMillis, reminder.medicationName)
+                alarmScheduler.scheduleAlarm(
+                    alarmTime.timeInMillis,
+                    reminder.category,
+                    reminder.medicationName
+                )
 
                 updateReminderDisplay()
                 Toast.makeText(requireContext(), "${reminder.category} 알람이 ${selectedHour}시 ${selectedMinute}분으로 설정되었습니다.", Toast.LENGTH_SHORT).show()

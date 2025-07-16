@@ -27,7 +27,11 @@ class BootReceiver : BroadcastReceiver() {
                         set(Calendar.SECOND, 0)
                         if (before(now)) add(Calendar.DATE, 1)
                     }
-                    alarmScheduler.scheduleAlarm(alarmTime.timeInMillis, medName)
+                    alarmScheduler.scheduleAlarm(
+                        alarmTime.timeInMillis,
+                        category,
+                        medName
+                    )
                 }
             }
         }
