@@ -10,10 +10,8 @@ import com.example.kkobakkobak.databinding.FragmentHomeBinding
 import com.example.kkobakkobak.ui.log.LogActivity
 import com.example.kkobakkobak.ui.history.LogHistoryActivity
 import com.example.kkobakkobak.ui.record.RecordActivity
-import com.example.kkobakkobak.ui.history.LogHistoryActivity
-import com.example.kkobakkobak.ui.log.LogActivity
-import com.example.kkobakkobak.ui.record.RecordActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.kkobakkobak.R
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -22,13 +20,14 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.btnAddLog.setOnClickListener {
             startActivity(Intent(requireContext(), LogActivity::class.java))
         }

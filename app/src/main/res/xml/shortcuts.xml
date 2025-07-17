@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="add_log"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_log"
+        android:shortcutShortLabel="@string/shortcut_add_log_short"
+        android:shortcutLongLabel="@string/shortcut_add_log_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.kkobakkobak"
+            android:targetClass="com.example.kkobakkobak.ui.main.record.log.history.completion.LogActivity" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.kkobakkobak"
+            android:targetClass="com.example.kkobakkobak.ui.main.record.log.history.completion.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="view_history"
+        android:enabled="true"
+        android:icon="@drawable/ic_history"
+        android:shortcutShortLabel="@string/shortcut_view_history_short"
+        android:shortcutLongLabel="@string/shortcut_view_history_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.kkobakkobak"
+            android:targetClass="com.example.kkobakkobak.ui.history.LogHistoryActivity" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.kkobakkobak"
+            android:targetClass="com.example.kkobakkobak.ui.main.record.log.history.completion.MainActivity" />
+    </shortcut>
+</shortcuts>

@@ -4,20 +4,30 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/navigation_home_title" />
+
     <item
         android:id="@+id/navigation_medication"
         android:icon="@drawable/ic_medication"
         android:title="@string/navigation_medication_title" />
+
     <item
         android:id="@+id/navigation_mood"
         android:icon="@drawable/ic_mood_neutral"
         android:title="@string/navigation_mood_title" />
+
     <item
         android:id="@+id/navigation_path"
         android:icon="@drawable/ic_directions_car_black_24dp"
         android:title="@string/navigation_path_title" />
+
     <item
         android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_check"
+        android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/navigation_settings_title" />
+
+    <!--미사용-->
+    <!--<item
+        android:id="@+id/navigation_development"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/navigation_development_title" /> -->
 </menu>
