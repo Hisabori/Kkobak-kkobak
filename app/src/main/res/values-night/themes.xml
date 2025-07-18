@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Kkobakkobak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- 다크 색상 -->
-        <item name="colorPrimary">#BB86FC</item>
-        <item name="colorPrimaryVariant">#3700B3</item>
-        <item name="colorOnPrimary">#000000</item>
-        <item name="colorOnBackground">#FFFFFF</item>
-        <item name="colorSurface">#121212</item>
-        <item name="colorOnSurface">#FFFFFF</item>
+        <!-- 다크 모드에서도 단순한 색상 사용 -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/white</item>
 
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
     </style>
 </resources>
