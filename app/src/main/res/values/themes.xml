@@ -1,12 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Kkobakkobak" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/white</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <item name="colorSecondary">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/white</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <!-- A more vibrant color palette using the existing gradient colors -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="android:windowBackground">@drawable/background_main</item>
+        <item name="android:textColorPrimary">@color/text_black</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+        <item name="android:navigationBarColor">@color/purple_700</item>
     </style>
 </resources>

@@ -75,6 +75,8 @@ dependencies {
     // build.gradle.kts (:app 기준)
     implementation("com.kakao.maps.open:android:2.6.0") // 최신 버전 확인
     implementation("androidx.cardview:cardview:1.0.0")
+    // Flutter engine for add-to-app
+    implementation("io.flutter:flutter_embedding_debug:1.0.0")
 
 
 

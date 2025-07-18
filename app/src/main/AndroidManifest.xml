@@ -19,6 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Flutter integration -->
+        <activity android:name=".ui.flutter.FlutterMainActivity" />
 
         <activity android:name=".ui.log.LogActivity" />
         <activity android:name=".ui.history.LogHistoryActivity" />
