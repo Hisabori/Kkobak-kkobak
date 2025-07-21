@@ -1,20 +1,68 @@
 package com.example.kkobakkobak.ui.record
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.kkobakkobak.databinding.ActivityRecordBinding // 이 바인딩 클래스가 있다고 가정할게
+import androidx.lifecycle.lifecycleScope
+import com.example.kkobakkobak.R
+import com.example.kkobakkobak.data.database.AppDatabase
+import com.example.kkobakkobak.data.model.MedicationLog
+import com.example.kkobakkobak.databinding.ActivityRecordBinding
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RecordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordBinding
+    private var selectedMood = 0
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 여기는 이제 RecordActivity 화면이 시작될 때 필요한 초기화나 UI 로직을 넣을 수 있는 곳이야.
-        // 예를 들어, 화면에 "기록을 남겨주세요!" 같은 메시지를 띄우거나
-        // 다른 기록 관련 UI 컴포넌트를 초기화할 수 있지.
-        // binding.someTextView.text = "이곳은 기록 화면입니다!" // 예시로 텍스트뷰가 있다면 이렇게 쓸 수 있어.
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        db = AppDatabase.getDatabase(this)
+
+        binding.btnMoodGood.setOnClickListener { selectMood(1, binding.btnMoodGood) }
+        binding.btnMoodNeutral.setOnClickListener { selectMood(2, binding.btnMoodNeutral) }
+        binding.btnMoodBad.setOnClickListener { selectMood(3, binding.btnMoodBad) }
+
+        binding.btnSaveRecord.setOnClickListener {
+            if (selectedMood == 0) {
+                Toast.makeText(this, "오늘의 기분을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val reason = binding.etReason.text.toString()
+            val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val log = MedicationLog(date = today, mood = selectedMood, memo = reason)
+
+            lifecycleScope.launch {
+                db.medicationLogDao().insert(log)
+                Toast.makeText(applicationContext, "기분이 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+
+    private fun selectMood(mood: Int, button: ImageButton) {
+        selectedMood = mood
+        binding.btnMoodGood.alpha = 0.5f
+        binding.btnMoodNeutral.alpha = 0.5f
+        binding.btnMoodBad.alpha = 0.5f
+        button.alpha = 1.0f
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
