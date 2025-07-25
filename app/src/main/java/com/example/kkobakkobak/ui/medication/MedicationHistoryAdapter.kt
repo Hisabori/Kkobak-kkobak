@@ -7,9 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.data.model.MedicationIntake
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.example.kkobakkobak.util.DateUtils
 
 class MedicationHistoryAdapter(private val intakes: List<MedicationIntake>) :
     RecyclerView.Adapter<MedicationHistoryAdapter.IntakeViewHolder>() {
@@ -28,9 +26,7 @@ class MedicationHistoryAdapter(private val intakes: List<MedicationIntake>) :
     override fun onBindViewHolder(holder: IntakeViewHolder, position: Int) {
         val intake = intakes[position]
         holder.medName.text = intake.medName
-        val date = Date(intake.timestamp)
-        val formatted = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date)
-        holder.time.text = formatted
+        holder.time.text = DateUtils.formatTimestamp(intake.timestamp)
     }
 
     override fun getItemCount() = intakes.size
