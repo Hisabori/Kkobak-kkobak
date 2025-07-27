@@ -44,6 +44,11 @@ class MedicationFragment : Fragment() {
         setupRecyclerView()
         updateReminderDisplay()
 
+        //오늘의 투약 현황 보기 기능
+        binding.tvTodayStatus.setOnClickListener{
+            startActivity(Intent(requireContext(),MedicationHistoryActivity::class.java))
+        }
+
         binding.tvViewHistory.setOnClickListener {
             startActivity(Intent(requireContext(), MedicationHistoryActivity::class.java))
         }
