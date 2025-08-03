@@ -25,9 +25,9 @@ class MedicationHistoryAdapter(private val intakes: List<MedicationIntake>) :
 
     override fun onBindViewHolder(holder: IntakeViewHolder, position: Int) {
         val intake = intakes[position]
-        holder.medName.text = intake.medName
+        holder.medName.text = intake.medicationName  // 🔧 수정됨
         holder.time.text = DateUtils.formatTimestamp(intake.timestamp)
     }
 
-    override fun getItemCount() = intakes.size
+    override fun getItemCount(): Int = intakes.size
 }

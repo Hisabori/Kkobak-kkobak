@@ -14,8 +14,9 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.kkobakkobak.data.dao.MedicationLogDao
 
-class LogActivity : AppCompatActivity() {
+abstract class LogActivity : AppCompatActivity() {
 
     private var selectedMood = 0
     private lateinit var db: AppDatabase
@@ -47,7 +48,7 @@ class LogActivity : AppCompatActivity() {
             val log = MedicationLog(date = today, mood = selectedMood, memo = memo)
 
             lifecycleScope.launch {
-                db.medicationLogDao().insert(log)
+                db.medicationIntakeDao().insertLog(log)
                 Toast.makeText(applicationContext, "오늘의 기록이 저장되었습니다.", Toast.LENGTH_SHORT).show()
                 finish()
             }
@@ -69,4 +70,5 @@ class LogActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    abstract fun medicationLogDao(): MedicationLogDao
 }

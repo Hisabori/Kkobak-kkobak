@@ -40,7 +40,18 @@
         android:textColor="@color/text_primary_white"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="8dp" />
+
+    <!-- ✅ 추가된 부분 -->
+    <TextView
+        android:id="@+id/tvTodayStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="오늘의 상태를 불러오는 중..."
+        android:textColor="@color/text_secondary_light_grey"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp" />
+    <!-- ✅ 여기까지 -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardMedication"
@@ -81,7 +92,6 @@
                 android:text="다음 투약 시간: 오후 8시 30분"
                 android:textColor="@color/text_secondary_light_grey"
                 android:textSize="16sp"/>
-
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -172,7 +182,6 @@
                 android:textColor="@color/button_text_blue"
                 app:cornerRadius="8dp"
                 android:layout_gravity="end"/>
-
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

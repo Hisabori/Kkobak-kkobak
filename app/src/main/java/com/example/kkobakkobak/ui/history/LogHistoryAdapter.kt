@@ -3,40 +3,30 @@ package com.example.kkobakkobak.ui.history
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kkobakkobak.R
-import com.example.kkobakkobak.data.model.MedicationLog
+import com.example.kkobakkobak.data.model.MedicationIntake
 
-class LogHistoryAdapter(private val logs: List<MedicationLog>) : RecyclerView.Adapter<LogHistoryAdapter.LogViewHolder>() {
+class LogHistoryAdapter(private val logs: List<MedicationIntake>) :
+    RecyclerView.Adapter<LogHistoryAdapter.ViewHolder>() {
 
-    class LogViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val dateTextView: TextView = view.findViewById(R.id.tv_log_date)
-        val memoTextView: TextView = view.findViewById(R.id.tv_log_memo)
-        val moodImageView: ImageView = view.findViewById(R.id.iv_log_mood)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val medName: TextView = view.findViewById(R.id.tv_medication_name)
+        val timestamp: TextView = view.findViewById(R.id.tv_timestamp)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_log, parent, false)
-        return LogViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_log_history, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: LogViewHolder, position: Int) {
+    override fun getItemCount(): Int = logs.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val log = logs[position]
-        holder.dateTextView.text = log.date
-        holder.memoTextView.text = log.memo
-
-        val moodIcon = when (log.mood) {
-            1 -> R.drawable.ic_mood_good
-            2 -> R.drawable.ic_mood_neutral
-            3 -> R.drawable.ic_mood_bad
-            else -> 0
-        }
-        if (moodIcon != 0) {
-            holder.moodImageView.setImageResource(moodIcon)
-        }
+        holder.medName.text = log.medicationName
+        holder.timestamp.text = log.timestamp.toString() // 포맷팅 필요 시 따로 처리
     }
-
-    override fun getItemCount() = logs.size
 }
