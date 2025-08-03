@@ -9,15 +9,26 @@
     android:focusable="true"
     tools:context=".ui.completion.CompletionActivity">
 
+    <!-- ✅ 상단 툴바 추가 -->
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- ✅ 툴바 아래에 애니메이션 -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/completion_animation_view"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
         app:lottie_rawRes="@raw/checkmark_animation"
         app:lottie_autoPlay="true"
         app:lottie_loop="false" />
 
+    <!-- ✅ 메시지 텍스트 -->
     <TextView
         android:id="@+id/completion_text"
         android:layout_width="wrap_content"
@@ -30,6 +41,7 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <!-- ✅ 하단 버튼 -->
     <Button
         android:id="@+id/btn_confirm"
         android:layout_width="wrap_content"

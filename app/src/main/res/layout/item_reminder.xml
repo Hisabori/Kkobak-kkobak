@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:paddingTop="20sp"
+    android:paddingBottom="20sp"
+    tools:ignore="ExtraText">
 
     <!-- ImageView를 이모지를 표시할 TextView로 변경 -->
     <TextView
@@ -47,7 +48,8 @@
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="#000000"
         android:textStyle="bold"
+        android:textSize="20sp"
         android:text="설정"/>
 </LinearLayout>

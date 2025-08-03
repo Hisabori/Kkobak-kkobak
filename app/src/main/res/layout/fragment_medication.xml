@@ -1,90 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".ui.medication.MedicationFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:padding="16dp">
 
+    <!-- 상단 텍스트 영역 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_today_status"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/card_background_dark_blue"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            android:text="오늘의 투약 현황 보기"
+            android:textColor="#1E88E5"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingBottom="4dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_medication"
-                        app:tint="@color/single_blue"
-                        android:contentDescription="투약 아이콘" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="투약 관리"
-                        android:textColor="@color/text_primary_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="8dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_today_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="오늘의 투약 현황 보기"
-                    android:textColor="@color/text_secondary_light_grey"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/tv_add_alarm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="알림 추가하기"
-                    android:textColor="@color/text_secondary_light_grey"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/tv_view_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="복용 기록 확인"
-                    android:textColor="@color/text_secondary_light_grey"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewReminders"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_view_history"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_reminder" />
-
+            android:text="복용 기록 확인"
+            android:textColor="#1E88E5"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
     </LinearLayout>
-</ScrollView>
+
+    <!-- 리마인더 카드 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewReminders"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_reminder_card" />
+
+</LinearLayout>
