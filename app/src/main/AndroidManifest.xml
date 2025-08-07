@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kkobakkobak">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -12,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Kkobakkobak">
+
         <activity android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -24,6 +24,7 @@
         <activity android:name=".ui.history.LogHistoryActivity" />
         <activity android:name=".ui.record.RecordActivity" />
         <activity android:name=".ui.medication.MedicationHistoryActivity" />
+        <activity android:name=".ui.completion.CompletionActivity" />
 
         <receiver
             android:name=".receiver.AlarmReceiver"
@@ -43,10 +44,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity android:name=".ui.log.LogActivity" />
-        <activity android:name=".ui.history.LogHistoryActivity" />
-        <activity android:name=".ui.record.RecordActivity" />
-        <activity android:name=".ui.completion.CompletionActivity" />
     </application>
 
 </manifest>

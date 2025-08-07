@@ -1,3 +1,21 @@
 <resources>
-    <!-- 여기엔 앱 전체 테마 말고, 필요 시 개별 스타일만 정의 -->
+    <style name="Theme.Kkobakkobak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">@color/accent_blue</item>
+        <item name="colorPrimaryVariant">@color/accent_blue</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+
+        <!-- Backgrounds -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorBackground">@color/background</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- System bars -->
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:statusBarColor">@color/accent_blue</item>
+        <item name="android:colorAccent">@color/accent_blue</item>
+    </style>
 </resources>
