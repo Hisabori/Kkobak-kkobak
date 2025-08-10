@@ -10,7 +10,7 @@
     <!-- 메시지 및 버튼 텍스트 -->
     <string name="today_streak_message">🔥 꾸준히 약을 챙겨보세요!</string>
     <string name="set_alarm_button">설정</string>
-    <string name="set_med_name_button">약 이름 설정</string>
+    <string name="set_med_name_button"> 약 이름 설정</string>
     <string name="med_name_default">미설정</string>
     <string name="time_not_set">설정되지 않음</string>
     <string name="add_log_button">로그 추가</string>
@@ -66,4 +66,17 @@
         <item>건강을 위한 소중한 습관, 잊지 마세요!</item>
         <item>오늘도 빛나는 당신, 약 챙기기도 잊지 마세요!</item>
     </string-array>
+
+    <!-- 하단 탭: 입원현황 -->
+    <string name="navigation_inpatient_title">입원현황</string>
+
+    <!-- Inpatient 화면 텍스트 -->
+    <string name="inpatient_title">입원 환자 현황 (2020)</string>
+    <string name="inpatient_last_updated_prefix">마지막 업데이트:</string>
+    <string name="inpatient_avg_format">평균: %1$d명</string>
+    <string name="inpatient_min_format">최소: %1$d명 (%2$s)</string>
+    <string name="inpatient_max_format">최대: %1$d명 (%2$s)</string>
+    <string name="inpatient_loading">로딩 중...</string>
+    <string name="inpatient_load_failed">로드 실패</string>
+
 </resources>

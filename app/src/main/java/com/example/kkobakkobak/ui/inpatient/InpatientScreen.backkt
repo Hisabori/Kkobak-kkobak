@@ -1,0 +1,107 @@
+package com.example.kkobakkobak.ui.inpatient
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.example.kkobakkobak.data.model.InpatientEntry
+import java.time.format.DateTimeFormatter
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@Composable
+fun InpatientScreen(
+    viewModel: InpatientViewModel
+) {
+    val state by viewModel.state.collectAsState()
+    val emojis = listOf("💊","🌧","🌥","🏥","😢")
+    val randomEmoji by remember { mutableStateOf(emojis.random()) }
+
+    val isRefreshing = state is InpatientUiState.Loading
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = { viewModel.load() }
+    )
+
+    Box(Modifier.fillMaxSize().pullRefresh(pullRefreshState)) {
+        when (state) {
+            is InpatientUiState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("$randomEmoji 로딩 중...")
+                }
+            }
+            is InpatientUiState.Error -> {
+                Column(
+                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("🥺 로드 실패", style = MaterialTheme.typography.titleMedium)
+                    Spacer(Modifier.height(8.dp))
+                    Button(onClick = { viewModel.load() }) { Text("다시 시도") }
+                }
+            }
+            is InpatientUiState.Success -> {
+                val s = state as InpatientUiState.Success
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(16.dp)
+                ) {
+                    item {
+                        Text("입원 환자 현황 (2020)", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.height(4.dp))
+                        Text("마지막 업데이트: ${s.lastUpdated}", style = MaterialTheme.typography.bodySmall)
+                        Spacer(Modifier.height(12.dp))
+                        SummaryRow(avg = s.avg, min = s.min, max = s.max)
+                        Spacer(Modifier.height(16.dp))
+                        Divider()
+                        Spacer(Modifier.height(8.dp))
+                    }
+                    items(s.items) { entry ->
+                        InpatientRow(entry)
+                    }
+                }
+            }
+        }
+
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
+    }
+}
+
+@Composable
+private fun SummaryRow(avg: Int, min: InpatientEntry, max: InpatientEntry) {
+    Column {
+        Text("평균: $avg명")
+        Text("최소: ${min.count}명 (${min.date})")
+        Text("최대: ${max.count}명 (${max.date})")
+    }
+}
+
+@Composable
+private fun InpatientRow(e: InpatientEntry) {
+    val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            Text(e.date.format(df), fontWeight = FontWeight.SemiBold)
+            Text(e.weekday, style = MaterialTheme.typography.bodySmall)
+        }
+        Text("${e.count}명", fontWeight = FontWeight.Medium)
+    }
+}

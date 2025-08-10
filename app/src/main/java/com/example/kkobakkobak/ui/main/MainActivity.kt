@@ -17,6 +17,7 @@ import com.example.kkobakkobak.alarm.AlarmScheduler
 import com.example.kkobakkobak.databinding.ActivityMainBinding
 import com.example.kkobakkobak.ui.completion.CompletionFragment
 import com.example.kkobakkobak.ui.history.LogHistoryFragment
+import com.example.kkobakkobak.ui.inpatient.InpatientFragment
 import com.example.kkobakkobak.ui.log.LogFragment
 import com.example.kkobakkobak.ui.record.RecordFragment
 import com.example.kkobakkobak.ui.medication.MedicationFragment
@@ -93,6 +94,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_mood -> {
                     selectedTab = R.id.navigation_mood
                     replaceFragment(MoodFragment())
+                    true
+                }
+                R.id.navigation_inpatient -> { // ✅ 추가
+                    selectedTab = R.id.navigation_inpatient
+                    replaceFragment(InpatientFragment())
                     true
                 }
                 R.id.navigation_path -> {
