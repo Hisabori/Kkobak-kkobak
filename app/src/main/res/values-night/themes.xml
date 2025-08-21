@@ -1,21 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Kkobakkkobak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand colors -->
+<resources>
+    <style name="Theme.Kkobakkkobak" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/accent_blue</item>
-        <item name="colorPrimaryVariant">@color/accent_blue</item>
         <item name="colorOnPrimary">@color/text_primary</item>
-
-        <!-- Backgrounds -->
-        <item name="android:windowBackground">@color/background</item>
-        <item name="colorBackground">@color/background</item>
-
-        <!-- Text colors -->
-        <item name="android:textColorPrimary">@color/text_primary</item>
-        <item name="android:textColorSecondary">@color/text_secondary</item>
-
-        <!-- Others -->
-        <item name="android:navigationBarColor">@color/background</item>
+        <item name="colorSurface">@color/background</item>
+        <item name="colorOnSurface">@color/text_primary</item>
         <item name="android:statusBarColor">@color/accent_blue</item>
-        <item name="android:colorAccent">@color/accent_blue</item>
+        <item name="android:navigationBarColor">@color/background</item>
     </style>
 </resources>

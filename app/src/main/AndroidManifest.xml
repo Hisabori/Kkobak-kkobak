@@ -1,18 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Kkobakkobak">
+        android:theme="@style/Theme.Kkobakkkobak">
 
-        <activity android:name=".ui.main.MainActivity"
+        <activity
+            android:name="com.example.kkobakkobak.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,30 +18,5 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.log.LogActivity" />
-        <activity android:name=".ui.history.LogHistoryActivity" />
-        <activity android:name=".ui.record.RecordActivity" />
-        <activity android:name=".ui.medication.MedicationHistoryActivity" />
-        <activity android:name=".ui.completion.CompletionActivity" />
-
-        <receiver
-            android:name=".receiver.AlarmReceiver"
-            android:enabled="true"
-            android:exported="false" />
-
-        <receiver
-            android:name=".receiver.MedicationTakenReceiver"
-            android:enabled="true"
-            android:exported="false" />
-
-        <receiver
-            android:name=".receiver.BootReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
     </application>
-
 </manifest>
