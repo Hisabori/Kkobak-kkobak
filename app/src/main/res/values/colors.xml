@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+    <!--lightmode background-->
+    <color name="background_light">#FFFFFF</color>
+
+
     <color name="accent_blue">#90CAF9</color>
     <color name="background">#121212</color>
     <color name="text_primary">#FFFFFF</color>
