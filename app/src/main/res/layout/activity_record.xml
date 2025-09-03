@@ -1,71 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    tools:context=".ui.record.RecordActivity">
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="나의 기분 기록하기"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="현재 기분을 선택해주세요."/>
+        android:text="현재 기분을 선택해주세요."
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/mood_button_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/btn_mood_good"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mood_good" />
-        <ImageButton
-            android:id="@+id/btn_mood_neutral"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mood_neutral" />
-        <ImageButton
-            android:id="@+id/btn_mood_bad"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mood_bad" />
-    </LinearLayout>
+        app:constraint_referenced_ids="btn_mood_good, btn_mood_neutral, btn_mood_bad" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/btn_mood_good"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
-        android:text="왜 그렇게 생각하였나요?" />
+        android:alpha="0.5"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="기분 좋음"
+        android:src="@drawable/ic_mood_good"
+        app:layout_constraintEnd_toStartOf="@+id/btn_mood_neutral"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <EditText
-        android:id="@+id/et_reason"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/btn_mood_neutral"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:alpha="0.5"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="기분 보통"
+        android:src="@drawable/ic_mood_neutral"
+        app:layout_constraintEnd_toStartOf="@+id/btn_mood_bad"
+        app:layout_constraintStart_toEndOf="@+id/btn_mood_good"
+        app:layout_constraintTop_toTopOf="@id/btn_mood_good" />
+
+    <ImageButton
+        android:id="@+id/btn_mood_bad"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:alpha="0.5"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="기분 나쁨"
+        android:src="@drawable/ic_mood_bad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_mood_neutral"
+        app:layout_constraintTop_toTopOf="@id/btn_mood_good" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_reason"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        android:hint="기분이 어떤지 적어보세요..."
-        android:gravity="top"
-        android:background="@null" />
+        android:layout_margin="16dp"
+        android:hint="무슨 일이 있었나요? (선택사항)"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_record"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_mood_good">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_reason"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_save_record"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="저장하기" />
+        android:layout_margin="16dp"
+        android:padding="12dp"
+        android:text="저장하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

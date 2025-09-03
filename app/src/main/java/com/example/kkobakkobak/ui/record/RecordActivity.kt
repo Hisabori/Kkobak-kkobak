@@ -10,12 +10,13 @@ import com.example.kkobakkobak.R
 import com.example.kkobakkobak.data.database.AppDatabase
 import com.example.kkobakkobak.data.model.MedicationLog
 import com.example.kkobakkobak.databinding.ActivityRecordBinding
+import com.example.kkobakkobak.ui.base.BaseActivity
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class RecordActivity : AppCompatActivity() {
+class RecordActivity : BaseActivity() {
     private lateinit var binding: ActivityRecordBinding
     private var selectedMood = 0
     private lateinit var db: AppDatabase
@@ -24,6 +25,9 @@ class RecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupToolbar(binding.toolbarLayout.toolbar, "기록하기", true)
+
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

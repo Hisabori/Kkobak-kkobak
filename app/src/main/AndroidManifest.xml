@@ -17,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.record.RecordActivity" />
+        <activity android:name=".ui.log.LogActivity" />
+        <activity android:name=".ui.history.LogHistoryActivity" />
 
     </application>
 </manifest>
