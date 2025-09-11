@@ -16,6 +16,10 @@ android {
         versionCode = 1
         versionName = "1.0"
         buildConfigField("boolean", "SHOW_SCHEDULE", "false")
+
+        //경기도 정신건강 API 호출
+        buildConfigField("String", "GG_API_KEY", "\"${properties["GG_API_KEY"]}\"")
+
     }
 
     buildTypes {
