@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    //id("com.google.gms.google-services")
 }
 
 android {
@@ -46,6 +47,12 @@ android {
 }
 
 dependencies {
+
+    //xml2kotlin
+    implementation("com.tickaroo.tikxml:retrofit:4.1.0")
+    implementation("com.squareup.retrofit2:converter-simplexml:2.9.0")
+
+
     // Compose BoM
     implementation(platform("androidx.compose:compose-bom:2024.10.01"))
     implementation("androidx.compose.ui:ui")
@@ -56,6 +63,9 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.2")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+
+    // xml to .kt converter
+    implementation("com.squareup.retrofit2:converter-simplexml:2.9.0")
 
     // ViewModel, Fragment KTX (by viewModels)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
