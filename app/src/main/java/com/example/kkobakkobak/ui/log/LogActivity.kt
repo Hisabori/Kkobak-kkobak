@@ -16,7 +16,9 @@ import java.util.Date
 import java.util.Locale
 import com.example.kkobakkobak.data.dao.MedicationLogDao
 
-abstract class LogActivity : AppCompatActivity() {
+//abstract class  LogActivity : AppCompatActivity() {
+
+    class  LogActivity : AppCompatActivity() {
 
     private var selectedMood = 0
     private lateinit var db: AppDatabase
@@ -70,5 +72,5 @@ abstract class LogActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-    abstract fun medicationLogDao(): MedicationLogDao
+    //abstract fun medicationLogDao(): MedicationLogDao
 }
