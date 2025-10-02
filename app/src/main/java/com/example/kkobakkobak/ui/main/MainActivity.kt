@@ -1,20 +1,14 @@
 package com.example.kkobakkobak.ui.main
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels // 👈 ViewModel 사용을 위해 추가
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.databinding.ActivityMainBinding
 import com.example.kkobakkobak.ui.inpatient.InpatientFragment
@@ -27,19 +21,20 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 // HomeFragment import가 필요하다면 추가하세요:
-// import com.example.kkobakkobak.ui.home.HomeFragment
+import com.example.kkobakkobak.ui.main.HomeFragment // 👈 HomeFragment의 실제 경로로 수정
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appTitleTypewriter: TextView
+    private val viewModel: MainViewModel by viewModels() // 👈 ViewModel 초기화
 
     private var selectedTab: Int = R.id.navigation_home
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) { // 👈 onCreate 함수 복구
         super.onCreate(savedInstanceState)
-        // (선택) 에지 투 에지
-        // enableEdgeToEdge()
+
+        // enableEdgeToEdge() // (선택) 에지 투 에지
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,8 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         playTypewriterEffectAndShowMainContent()
         setupBottomNavigationView()
-        setupStreakUpdateReceiver()
-        // 알람은 MedicationFragment 쪽에서 관리
+        setupStreakUpdateFlowObserver() // 👈 SharedFlow 관찰 함수 호출 (LocalBroadcastManager 대체)
     }
 
     private fun playTypewriterEffectAndShowMainContent() {
@@ -60,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         val customTypeface: Typeface? = ResourcesCompat.getFont(this, R.font.kkobakkobak)
         customTypeface?.let { appTitleTypewriter.typeface = it }
 
-        // Fragment/Activity 생명주기에 안전하게 lifecycleScope 사용
         lifecycleScope.launch {
             for (i in fullText.indices) {
                 appTitleTypewriter.text = fullText.substring(0, i + 1)
@@ -69,8 +62,23 @@ class MainActivity : AppCompatActivity() {
             delay(1000)
             appTitleTypewriter.visibility = View.GONE
 
-            // HomeFragment로 교체 (실제 경로/클래스명 확인)
+            // HomeFragment로 교체
             replaceFragment(HomeFragment())
+        }
+    }
+
+    // 👈 SharedFlow를 관찰하는 함수 추가 (LocalBroadcastManager 대체)
+    private fun setupStreakUpdateFlowObserver() {
+        // Activity 생명주기에 맞춰 Flow 관찰 시작
+        lifecycleScope.launch {
+            viewModel.streakUpdateEvent.collect {
+                val current = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                // LogFragment가 화면에 있다면 updateStreakDisplay() 호출
+                // LogFragment가 'ui/log' 패키지에 있음을 가정
+                if (current is LogFragment) {
+                    current.updateStreakDisplay() // LogFragment에 이 메서드가 있다고 가정
+                }
+            }
         }
     }
 
@@ -118,18 +126,5 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun setupStreakUpdateReceiver() {
-        val streakUpdateReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == "com.example.kkobakkobak.ACTION_UPDATE_STREAK") {
-                    val current = supportFragmentManager.findFragmentById(R.id.fragment_container)
-                    if (current is LogFragment) current.updateStreakDisplay()
-                }
-            }
-        }
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            streakUpdateReceiver,
-            IntentFilter("com.example.kkobakkobak.ACTION_UPDATE_STREAK")
-        )
-    }
+    /* 👈 이전의 setupStreakUpdateReceiver 함수는 제거되었습니다. */
 }

@@ -9,4 +9,4 @@ data class MedicationLog(
     val date: String,
     val mood: Int, // 1: 좋음, 2: 보통, 3: 나쁨
     val memo: String
-)
+)   

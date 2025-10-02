@@ -1,6 +1,6 @@
 package com.example.kkobakkobak.network
 
-import com.example.kkobakkobak.data.network.GgApiService
+//import com.example.kkobakkobak.data.network.GgApiService
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
@@ -18,6 +18,10 @@ object RetrofitClient{
             //xml data converter
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build()
+    }
+
+    fun getInstance(): Retrofit {
+        return retrofit
     }
 
     val apiService: GgApiService by lazy {
