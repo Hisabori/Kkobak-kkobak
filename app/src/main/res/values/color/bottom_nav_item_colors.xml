@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 선택된 아이템 -->
     <item android:state_checked="true" android:color="@color/single_blue" />
-    <!-- 선택되지 않은 아이템 (70% 투명도) -->
-    <item android:color="#B3FFFFFF" /> <!-- B3는 70% 투명도를 의미합니다 (FF * 0.7 = B3) -->
+
+    <item android:color="@color/text_secondary_light_grey" />
 </selector>
