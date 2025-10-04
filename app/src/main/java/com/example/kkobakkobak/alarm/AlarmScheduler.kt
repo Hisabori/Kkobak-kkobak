@@ -6,21 +6,23 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.example.kkobakkobak.receiver.AlarmReceiver
+import com.example.kkobakkobak.data.model.MedicationReminder
+import java.util.Calendar
 
 class AlarmScheduler(private val context: Context) {
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    fun scheduleAlarm(timeInMillis: Long, category: String, medName: String) {
-        val notificationId = category.hashCode()
-        val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("MEDICATION_NAME", medName)
-            putExtra("NOTIFICATION_ID", notificationId)
-        }
+    // MedicationReminder 객체를 받아 알람 스케줄링
+    fun schedule(reminder: MedicationReminder) {
+        // ID를 RequestCode로 사용 (고유성 보장)
+        val requestCode = reminder.id
 
-        // PendingIntent의 RequestCode는 알람마다 고유해야 합니다.
-        // 여기서는 medName의 해시코드나 미리 정의된 고유한 코드를 사용할 수 있습니다.
-        val requestCode = notificationId // 간단한 고유 코드 생성
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("CATEGORY", reminder.category)
+            putExtra("MEDICATION_NAME", reminder.medicationName)
+            putExtra("REMINDER_ID", reminder.id) // 알람 발생 시 DB 업데이트를 위해 ID 전달
+        }
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -29,21 +31,35 @@ class AlarmScheduler(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val alarmTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, reminder.hour)
+            set(Calendar.MINUTE, reminder.minute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+
+            // 만약 이미 지난 시간이면 다음 날로 설정
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DATE, 1)
+            }
+        }
+
         try {
+            // 정확한 시간에 알람 설정
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                timeInMillis,
+                alarmTime.timeInMillis,
                 pendingIntent
             )
-            Log.d("AlarmScheduler", "Scheduled alarm for $medName at ${java.text.SimpleDateFormat("HH:mm").format(timeInMillis)}, requestCode: $requestCode")
+            Log.d("AlarmScheduler", "Scheduled alarm for ${reminder.category} at ${reminder.hour}:${reminder.minute}, ID: $requestCode")
         } catch (e: SecurityException) {
             Log.e("AlarmScheduler", "Failed to schedule alarm due to security exception: ${e.message}")
         }
     }
 
-    fun cancelAlarm(category: String) {
+    // MedicationReminder 객체를 받아 알람 취소
+    fun cancel(reminder: MedicationReminder) {
+        val requestCode = reminder.id // 스케줄링할 때 사용한 동일한 requestCode 사용
         val intent = Intent(context, AlarmReceiver::class.java)
-        val requestCode = category.hashCode() // 스케줄링할 때 사용한 동일한 requestCode 사용
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -52,6 +68,6 @@ class AlarmScheduler(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         alarmManager.cancel(pendingIntent)
-        Log.d("AlarmScheduler", "Cancelled alarm for category: $category, requestCode: $requestCode")
+        Log.d("AlarmScheduler", "Cancelled alarm for category: ${reminder.category}, ID: $requestCode")
     }
 }

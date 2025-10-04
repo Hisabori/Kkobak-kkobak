@@ -2,32 +2,36 @@ package com.example.kkobakkobak.ui.medication
 
 import android.app.AlertDialog
 import android.app.TimePickerDialog
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.alarm.AlarmScheduler
+import com.example.kkobakkobak.data.database.AppDatabase
 import com.example.kkobakkobak.databinding.FragmentMedicationBinding
 import com.example.kkobakkobak.data.model.MedicationReminder
-import com.example.kkobakkobak.ui.medication.MedicationHistoryActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.Locale
 
 class MedicationFragment : Fragment() {
     private var _binding: FragmentMedicationBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: MedicationReminderAdapter
-    private val reminderList = mutableListOf<MedicationReminder>()
+    private lateinit var reminderAdapter: MedicationReminderAdapter
+    private lateinit var db: AppDatabase
+    private lateinit var alarmScheduler: AlarmScheduler
+
+    // 초기 설정할 복용 시간대 목록
+    private val initialCategories = listOf("morning", "lunch", "dinner", "bedtime")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,13 +44,17 @@ class MedicationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        db = AppDatabase.getDatabase(requireContext())
+        alarmScheduler = AlarmScheduler(requireContext())
+
+        // 기존 SharedPreferences 로직 제거 및 Room 기반 초기화
         setupInitialReminders()
         setupRecyclerView()
-        updateReminderDisplay()
+        observeReminders()
 
-        //오늘의 투약 현황 보기 기능
+        // 기존 기능 유지
         binding.tvTodayStatus.setOnClickListener{
-            startActivity(Intent(requireContext(),MedicationHistoryActivity::class.java))
+            startActivity(Intent(requireContext(), MedicationHistoryActivity::class.java))
         }
 
         binding.tvViewHistory.setOnClickListener {
@@ -54,135 +62,152 @@ class MedicationFragment : Fragment() {
         }
     }
 
+    // DB에 기본 알림 카테고리(아침/점심/저녁/취침전)가 없으면 추가
     private fun setupInitialReminders() {
-        reminderList.add(MedicationReminder("morning"))
-        reminderList.add(MedicationReminder("lunch"))
-        reminderList.add(MedicationReminder("dinner"))
-        reminderList.add(MedicationReminder("bedtime"))
-        loadReminderStates()
-    }
-
-    private fun loadReminderStates() {
-        val prefs = requireContext().getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
-        reminderList.forEach { reminder ->
-            reminder.hour = prefs.getInt("${reminder.category}_hour", -1)
-            reminder.minute = prefs.getInt("${reminder.category}_minute", -1)
-            reminder.medicationName = prefs.getString("${reminder.category}_med_name", "미설정") ?: "미설정"
-            reminder.isActive = prefs.getBoolean("${reminder.category}_active", false)
+        lifecycleScope.launch {
+            initialCategories.forEach { category ->
+                if (db.medicationIntakeDao().getReminderByCategory(category) == null) {
+                    val defaultReminder = MedicationReminder(
+                        category = category,
+                        medicationName = "미설정",
+                        isActive = false,
+                        hour = when (category) {
+                            "morning" -> 9
+                            "lunch" -> 13
+                            "dinner" -> 18
+                            "bedtime" -> 22
+                            else -> -1
+                        },
+                        minute = 0
+                    )
+                    // Room에 초기 데이터 삽입
+                    db.medicationIntakeDao().insertReminder(defaultReminder)
+                }
+            }
+            // 알람이 비활성화된 상태에서 앱이 종료/재시작되면 알람을 다시 등록해야 함 (BootReceiver에서 처리 권장)
+            // 현재 Fragment에서는 활성화된 알림만 다시 스케줄링
+            db.medicationIntakeDao().getAllReminders().collectLatest { reminders ->
+                reminders.filter { it.isActive }.forEach { alarmScheduler.schedule(it) }
+            }
         }
     }
 
     private fun setupRecyclerView() {
-        adapter = MedicationReminderAdapter(reminderList) { reminder ->
+        // 버튼 클릭 (설정/취소) 처리: 상태를 반전시키고 다이얼로그를 띄우거나 취소
+        val onActionClick: (MedicationReminder) -> Unit = { reminder ->
             if (reminder.isActive) {
-                cancelAlarm(reminder)
+                cancelReminder(reminder)
             } else {
-                if (reminder.medicationName == "미설정") {
-                    showMedicationNameDialog(reminder)
+                showTimeAndMedicationDialog(reminder)
+            }
+        }
+
+        // 항목 전체 클릭 (시간/약물 설정) 처리
+        val onItemClick: (MedicationReminder) -> Unit = { reminder ->
+            showTimeAndMedicationDialog(reminder)
+        }
+
+        reminderAdapter = MedicationReminderAdapter(onActionClick, onItemClick)
+
+        binding.recyclerViewReminders.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reminderAdapter
+        }
+    }
+
+    // Room에서 알림 목록을 관찰하고 RecyclerView 업데이트
+    private fun observeReminders() {
+        lifecycleScope.launch {
+            // Room의 Flow를 사용해 DB 변경 시 자동 업데이트
+            db.medicationIntakeDao().getAllReminders().collectLatest { reminders ->
+                reminderAdapter.submitList(reminders)
+            }
+        }
+    }
+
+    // 알림 설정 다이얼로그 표시 (약 이름 입력 -> 시간 선택)
+    private fun showTimeAndMedicationDialog(reminder: MedicationReminder) {
+        val medNameInput = EditText(requireContext()).apply {
+            hint = "약 이름을 입력하세요 (예: 웰부트린, 콘서타)"
+            setText(reminder.medicationName.takeIf { it != "미설정" })
+        }
+
+        val medNameBuilder = AlertDialog.Builder(requireContext())
+            .setTitle("${getCategoryKoreanName(reminder.category)} 복약 설정")
+            .setView(medNameInput)
+            .setPositiveButton("다음") { dialog, _ ->
+                val medName = medNameInput.text.toString().trim()
+                if (medName.isEmpty()) {
+                    Toast.makeText(requireContext(), "약 이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 } else {
-                    showTimePicker(reminder)
+                    val updatedReminder = reminder.copy(medicationName = medName)
+                    showTimePicker(updatedReminder) // 시간 선택기로 이동
                 }
+                dialog.dismiss()
             }
-        }
-        binding.recyclerViewReminders.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewReminders.adapter = adapter
+            .setNegativeButton("취소") { dialog, _ -> dialog.cancel() }
+
+        medNameBuilder.show()
     }
 
-    private fun showMedicationNameDialog(reminder: MedicationReminder) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("약 이름 설정")
-        val input = EditText(requireContext())
-        input.hint = "약 이름을 입력하세요 (예: 웰부트린)"
-        input.setText(reminder.medicationName.takeIf { it != "미설정" })
-        builder.setView(input)
-
-        builder.setPositiveButton("확인") { dialog, _ ->
-            val medName = input.text.toString().trim()
-            if (medName.isNotEmpty()) {
-                reminder.medicationName = medName
-                saveReminderState(reminder)
-                showTimePicker(reminder)
-            } else {
-                Toast.makeText(requireContext(), "약 이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
-            dialog.dismiss()
-        }
-        builder.setNegativeButton("취소") { dialog, _ -> dialog.cancel() }
-        builder.show()
-    }
-
+    // 시간 선택기 표시
     private fun showTimePicker(reminder: MedicationReminder) {
-        val calendar = Calendar.getInstance()
-        val initialHour = reminder.hour.takeIf { it != -1 } ?: calendar.get(Calendar.HOUR_OF_DAY)
-        val initialMinute = reminder.minute.takeIf { it != -1 } ?: calendar.get(Calendar.MINUTE)
+        val initialHour = reminder.hour.takeIf { it != -1 } ?: Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val initialMinute = reminder.minute.takeIf { it != -1 } ?: Calendar.getInstance().get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(
+        TimePickerDialog(
             requireContext(),
             { _, selectedHour, selectedMinute ->
-                reminder.hour = selectedHour
-                reminder.minute = selectedMinute
-                reminder.isActive = true
-                saveReminderState(reminder)
-
-                val alarmScheduler = AlarmScheduler(requireContext())
-                val alarmTime = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, selectedHour)
-                    set(Calendar.MINUTE, selectedMinute)
-                    set(Calendar.SECOND, 0)
-                    if (before(Calendar.getInstance())) {
-                        add(Calendar.DATE, 1)
-                    }
-                }
-                alarmScheduler.scheduleAlarm(
-                    alarmTime.timeInMillis,
-                    reminder.category,
-                    reminder.medicationName
+                val updatedReminder = reminder.copy(
+                    hour = selectedHour,
+                    minute = selectedMinute,
+                    isActive = true // 시간 설정 완료 시 활성화
                 )
-
-                updateReminderDisplay()
-                Toast.makeText(requireContext(), "${reminder.category} 알람이 ${selectedHour}시 ${selectedMinute}분으로 설정되었습니다.", Toast.LENGTH_SHORT).show()
+                saveAndScheduleReminder(updatedReminder)
             },
             initialHour,
             initialMinute,
-            false
+            false // 24시간 형식 비활성화
+        ).show()
+    }
+
+    // DB 저장 및 알람 스케줄링
+    private fun saveAndScheduleReminder(reminder: MedicationReminder) {
+        lifecycleScope.launch {
+            db.medicationIntakeDao().updateReminder(reminder)
+            alarmScheduler.schedule(reminder)
+
+            val timeString = String.format(Locale.getDefault(), "%02d:%02d", reminder.hour, reminder.minute)
+            Toast.makeText(requireContext(),
+                "${getCategoryKoreanName(reminder.category)} 알람이 '$timeString' 으로 설정되었습니다. 앱이 종료되어도 알람은 유지됩니다.",
+                Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // 알림 취소 로직
+    private fun cancelReminder(reminder: MedicationReminder) {
+        val updatedReminder = reminder.copy(
+            isActive = false
         )
-        timePickerDialog.show()
+
+        lifecycleScope.launch {
+            db.medicationIntakeDao().updateReminder(updatedReminder)
+            alarmScheduler.cancel(reminder) // 기존 알람 취소
+
+            Toast.makeText(requireContext(),
+                "${getCategoryKoreanName(reminder.category)} 알람이 취소되었습니다. 다시 설정하려면 '설정' 버튼을 누르세요.",
+                Toast.LENGTH_LONG).show()
+        }
     }
 
-    private fun saveReminderState(reminder: MedicationReminder) {
-        val prefs = requireContext().getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
-        prefs.edit()
-            .putInt("${reminder.category}_hour", reminder.hour)
-            .putInt("${reminder.category}_minute", reminder.minute)
-            .putString("${reminder.category}_med_name", reminder.medicationName)
-            .putBoolean("${reminder.category}_active", reminder.isActive)
-            .apply()
-    }
-
-    private fun cancelAlarm(reminder: MedicationReminder) {
-        val prefs = requireContext().getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
-        prefs.edit()
-            .remove("${reminder.category}_hour")
-            .remove("${reminder.category}_minute")
-            .putString("${reminder.category}_med_name", "미설정")
-            .putBoolean("${reminder.category}_active", false)
-            .apply()
-
-        val alarmScheduler = AlarmScheduler(requireContext())
-        alarmScheduler.cancelAlarm(reminder.category)
-
-        reminder.hour = -1
-        reminder.minute = -1
-        reminder.medicationName = "미설정"
-        reminder.isActive = false
-
-        updateReminderDisplay()
-        Toast.makeText(requireContext(), "${reminder.category} 알람이 해제되었습니다.", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun updateReminderDisplay() {
-        loadReminderStates()
-        adapter.notifyDataSetChanged()
+    private fun getCategoryKoreanName(category: String): String {
+        return when (category.lowercase(Locale.getDefault())) {
+            "morning" -> "아침"
+            "lunch" -> "점심"
+            "dinner" -> "저녁"
+            "bedtime" -> "취침 전"
+            else -> category.replaceFirstChar { it.uppercase() }
+        }
     }
 
     override fun onDestroyView() {

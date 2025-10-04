@@ -9,12 +9,14 @@ import com.example.kkobakkobak.data.dao.MedicationLogDao
 import com.example.kkobakkobak.data.dao.MoodDao
 import com.example.kkobakkobak.data.model.MedicationIntake
 import com.example.kkobakkobak.data.model.MedicationLog
+import com.example.kkobakkobak.data.model.MedicationReminder // import 추가
 import com.example.kkobakkobak.data.model.MoodLog
 
 @Database(
-    entities = [MedicationIntake::class, MedicationLog::class, MoodLog::class],
-    // ✅ 1. 버전이 2 이상으로 올라가 있는지 확인
-    version = 2,
+    // MedicationReminder Entity 추가
+    entities = [MedicationIntake::class, MedicationLog::class, MoodLog::class, MedicationReminder::class],
+    // 버전 4로 업데이트 (fallbackToDestructiveMigration으로 충돌 해결)
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -32,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "kkobak_database"
                 )
-                    // ✅ 2. 이 코드가 반드시 포함되어 있는지 확인! (충돌 방지)
+                    // 데이터베이스 마이그레이션 실패 시 재생성 허용
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { INSTANCE = it }
@@ -40,4 +42,3 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 }
-
