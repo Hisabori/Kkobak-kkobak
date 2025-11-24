@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <color name="colorPrimary">#0078D4</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorPrimaryContainer">#DCEBFF</color>
+    <color name="colorOnPrimaryContainer">#001C3B</color>
 
-    <color name="colorPrimary">#51B5C0</color>
-    <color name="colorPrimaryDark">#309299</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorSecondary">#565F71</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorSecondaryContainer">#DAE2F9</color>
+    <color name="colorOnSecondaryContainer">#131C2B</color>
 
-    <color name="background">#FFFFFF</color>
-    <color name="background_screen">#F5F5F5</color> <color name="background_light">#FFFFFF</color>
+    <color name="colorBackground">#F8F9FC</color>
+    <color name="colorOnBackground">#1A1C1E</color>
+    <color name="colorSurface">#F8F9FC</color>
+    <color name="colorOnSurface">#1A1C1E</color>
 
-    <color name="card_background">#80FFFFFF</color>
+    <color name="colorSurfaceVariant">#E1E2EC</color>
+    <color name="colorOnSurfaceVariant">#44474E</color>
 
-    <color name="card_background_dark_blue">@color/card_background</color>
+    <color name="colorOutline">#74777F</color>
 
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
-    <color name="text_primary_white">@color/text_primary</color>
-    <color name="text_secondary_light_grey">@color/text_secondary</color>
 
-    <color name="button_primary">@color/colorPrimary</color>
-    <color name="colorTaken">@color/colorPrimary</color>
-    <color name="colorPending">#F44336</color>
-    <color name="button_text_white">#FFFFFF</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 
+
+    <color name="single_blue">@color/colorPrimary</color>   <color name="button_primary">@color/colorPrimary</color>
     <color name="accent_blue">@color/colorPrimary</color>
-    <color name="single_blue">@color/colorPrimary</color>
-    <color name="button_text_blue">@color/colorPrimary</color>
 
-    <color name="icon_mood_yellow">#FFD54F</color>
-    <color name="button_background_translucent_white">#80FFFFFF</color>
+    <color name="background">@color/colorBackground</color> <color name="card_background">@color/colorSurface</color>
+
+    <color name="text_primary">@color/colorOnBackground</color> <color name="text_secondary">@color/colorOnSurfaceVariant</color> <color name="card_background_dark_blue">#1A237E</color> <color name="text_primary_white">#FFFFFF</color>
+    <color name="text_secondary_light_grey">#B0BEC5</color>
+    <color name="icon_mood_yellow">#FFEB3B</color>
+
 </resources>

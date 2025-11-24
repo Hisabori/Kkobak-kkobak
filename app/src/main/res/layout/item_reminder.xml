@@ -9,7 +9,7 @@
     android:layout_marginTop="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/card_background"
+    app:cardBackgroundColor="?attr/colorSurfaceVariant"
     android:foreground="?android:attr/selectableItemBackground"
     >
 
@@ -46,7 +46,7 @@
                 android:id="@+id/tv_category_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="아침"/>
@@ -55,7 +55,7 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp"
                 tools:text="10:00 (웰부트린, 콘서타)"/>
         </LinearLayout>
@@ -65,7 +65,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"

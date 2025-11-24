@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/background"
+    android:background="?attr/colorSurface"
 
     tools:context=".ui.main.HomeFragment">
 
@@ -23,14 +23,14 @@
             android:text="홈"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="@color/text_primary_white" />
+            android:textColor="?attr/colorOnSurface" />
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_drop_down_white_24dp"
             android:layout_marginStart="4dp"
-            app:tint="@color/text_primary_white"
+            app:tint="?attr/colorOnSurface"
             android:contentDescription="드롭다운 화살표" />
     </LinearLayout>
 
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="안녕하세요!"
-        android:textColor="@color/text_primary_white"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="오늘의 상태를 불러오는 중..."
-        android:textColor="@color/text_secondary_light_grey"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="16sp"
         android:layout_marginBottom="24dp" />
     <!-- ✅ 여기까지 -->
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        app:cardBackgroundColor="@color/card_background_dark_blue"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp">
 
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="오늘도 약과 함께, 당신의 빛나는 하루를 응원합니다."
-                android:textColor="@color/text_primary_white"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 android:layout_marginBottom="8dp"/>
@@ -85,14 +85,14 @@
                 android:layout_height="wrap_content"
                 android:text="🔥 꾸준히 약을 챙겨보세요!"
                 android:textSize="18sp"
-                android:textColor="@color/text_primary_white"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_marginBottom="8dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="다음 투약 시간: 오후 8시 30분"
-                android:textColor="@color/text_secondary_light_grey"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -102,8 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="로그 추가"
-        android:backgroundTint="@color/button_primary"
-        android:textColor="@color/white"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
         app:cornerRadius="8dp"
         android:layout_marginBottom="8dp"/>
 
@@ -112,8 +112,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="기록 보기"
-        android:backgroundTint="@color/button_primary"
-        android:textColor="@color/white"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
         app:cornerRadius="8dp"
         android:layout_marginBottom="8dp"/>
 
@@ -122,8 +122,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="기분 기록"
-        android:backgroundTint="@color/button_primary"
-        android:textColor="@color/white"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
         app:cornerRadius="8dp"
         android:layout_marginBottom="24dp"/>
 
@@ -132,7 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/card_background_dark_blue"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp">
 
@@ -153,14 +153,14 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_mood_neutral"
-                    app:tint="@color/icon_mood_yellow"
+                    app:tint="?attr/colorPrimary"
                     android:contentDescription="기분 아이콘" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="내 기분 리포트 요약"
-                    android:textColor="@color/text_primary_white"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginStart="8dp" />
@@ -171,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="최근 기분 기록이 없습니다."
-                android:textColor="@color/text_secondary_light_grey"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"/>
 
@@ -180,8 +180,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="자세히 보기"
-                android:backgroundTint="@color/button_background_translucent_white"
-                android:textColor="@color/button_text_blue"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:textColor="?attr/colorOnSecondaryContainer"
                 app:cornerRadius="8dp"
                 android:layout_gravity="end"/>
         </LinearLayout>

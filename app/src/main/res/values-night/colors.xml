@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <!-- Fluent Design Inspired Dark Theme Colors -->
 
-    <color name="colorPrimary">#90CAF9</color>
-    <color name="colorPrimaryDark">#42A5F5</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <!-- Primary (Accent) -->
+    <color name="colorPrimary">#A8C8FF</color>
+    <color name="colorOnPrimary">#00315E</color>
+    <color name="colorPrimaryContainer">#004786</color>
+    <color name="colorOnPrimaryContainer">#D4E3FF</color>
 
-    <color name="background">#121212</color>
-    <color name="background_screen">@color/background</color>
+    <!-- Secondary -->
+    <color name="colorSecondary">#BEC6DC</color>
+    <color name="colorOnSecondary">#283141</color>
+    <color name="colorSecondaryContainer">#3F4758</color>
+    <color name="colorOnSecondaryContainer">#DAE2F9</color>
 
-    <color name="background_light">#801A237E</color>
-    <color name="card_background">@color/background_light</color>
-    <color name="card_background_dark_blue">@color/background_light</color>
+    <!-- Background & Surface -->
+    <color name="colorBackground">#1A1C1E</color>
+    <color name="colorOnBackground">#E3E2E6</color>
+    <color name="colorSurface">#1A1C1E</color>
+    <color name="colorOnSurface">#E3E2E6</color>
 
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#B0BEC5</color>
-    <color name="text_primary_white">@color/text_primary</color>
-    <color name="text_secondary_light_grey">#90A4AE</color>
+    <!-- Surface Variants (for cards, etc.) -->
+    <color name="colorSurfaceVariant">#44474E</color>
+    <color name="colorOnSurfaceVariant">#C4C6CF</color>
 
-    <color name="button_primary">@color/colorPrimary</color>
-    <color name="colorTaken">@color/colorPrimary</color>
-    <color name="colorPending">#F44336</color>
+    <!-- Outlines -->
+    <color name="colorOutline">#8E9099</color>
 
-    <color name="accent_blue">@color/colorPrimary</color>
-    <color name="single_blue">@color/colorPrimary</color>
-    <color name="button_text_white">#FFFFFF</color>
-    <color name="icon_mood_yellow">#FFD54F</color>
-    <color name="button_background_translucent_white">#80FFFFFF</color>
-    <color name="button_text_blue">@color/colorPrimary</color>
 </resources>

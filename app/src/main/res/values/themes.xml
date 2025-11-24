@@ -1,22 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Kkobakkkobak" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.Kkobakkobak" parent="Theme.Material3.DayNight.NoActionBar">
 
-        <item name="colorPrimary">@color/accent_blue</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryContainer">@color/single_blue</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
 
-        <item name="colorSecondary">@color/single_blue</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSecondaryContainer">@color/single_blue</item>
-        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
 
-        <item name="android:colorBackground">@color/background_light</item>
-        <item name="colorSurface">@color/background_light</item>
-        <item name="colorOnSurface">@color/text_secondary</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
 
-        <item name="android:statusBarColor">@color/background_light</item>
-        <item name="android:navigationBarColor">@color/background_light</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
+
+        <item name="colorOutline">@color/colorOutline</item>
+
+        <item name="android:statusBarColor">@color/colorSurface</item>
+        <item name="android:navigationBarColor">@color/colorSurface</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
 </resources>
