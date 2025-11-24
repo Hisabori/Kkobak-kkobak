@@ -1,17 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Kkobakkkobak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Kkobakkkobak" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/accent_blue</item>
-        <item name="colorPrimaryVariant">@color/card_background_dark_blue</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimaryContainer">@color/card_background_dark_blue</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
 
         <item name="colorSecondary">@color/single_blue</item>
-        <item name="colorSecondaryVariant">@color/single_blue</item>
         <item name="colorOnSecondary">@color/text_primary_white</item>
+        <item name="colorSecondaryContainer">@color/single_blue</item>
+        <item name="colorOnSecondaryContainer">@color/text_primary_white</item>
 
-        <item name="android:colorBackground">@color/background</item> <item name="colorSurface">@color/background</item>
-        <item name="colorOnSurface">@color/text_primary</item> <item name="android:statusBarColor">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/background</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>

@@ -52,8 +52,8 @@ android {
 
 
     repositories {
-        google()
         mavenCentral()
+        google()
         maven { url = uri("https://jitpack.io") }
     }
 
@@ -79,7 +79,7 @@ android {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.20") //
 
         // Compose Material3 (BOM으로 버전 통합)
-        implementation(platform("androidx.compose:compose-bom:2025.09.00"))
+        implementation(platform("androidx.compose:compose-bom:2024.06.00"))
         implementation("androidx.compose.ui:ui")
         implementation("androidx.compose.ui:ui-tooling-preview")
         implementation("androidx.compose.material3:material3")
@@ -96,11 +96,14 @@ android {
         implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
         implementation("androidx.fragment:fragment-ktx:1.8.9")
 
-            // SwipeRefreshLayout
+        // SwipeRefreshLayout
         implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
         // Lottie 애니메이션
         implementation("com.airbnb.android:lottie:6.6.9")
+
+        // MPAndroidChart
+        implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
         val tikxml_version = "0.8.13" // 적절한 안정 버전 사용
 

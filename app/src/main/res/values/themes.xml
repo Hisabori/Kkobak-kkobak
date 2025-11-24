@@ -1,13 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Kkobakkkobak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Kkobakkkobak" parent="Theme.Material3.DayNight.NoActionBar">
 
         <item name="colorPrimary">@color/accent_blue</item>
-        <item name="colorPrimaryVariant">@color/single_blue</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/single_blue</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
 
         <item name="colorSecondary">@color/single_blue</item>
-        <item name="colorSecondaryVariant">@color/single_blue</item>
         <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/single_blue</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
 
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/background_light</item>
@@ -16,6 +18,5 @@
         <item name="android:statusBarColor">@color/background_light</item>
         <item name="android:navigationBarColor">@color/background_light</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
 </resources>

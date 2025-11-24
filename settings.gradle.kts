@@ -1,14 +1,14 @@
 pluginManagement {
     repositories {
-        google()
         mavenCentral()
+        google()
         gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 }
 rootProject.name = "Kkobak-kkobak"
