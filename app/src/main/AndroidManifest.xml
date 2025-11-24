@@ -7,8 +7,8 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher_angry"
+        android:roundIcon="@mipmap/ic_launcher_angry_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Kkobakkobak">
 
@@ -20,6 +20,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity-alias
+            android:name=".ui.main.MainActivityAngry"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_angry"
+            android:targetActivity="com.example.kkobakkobak.ui.main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
         <activity android:name=".ui.record.RecordActivity" />
         <activity android:name=".ui.log.LogActivity" />
         <activity android:name=".ui.history.LogHistoryActivity" />

@@ -1,5 +1,7 @@
 package com.example.kkobakkobak.ui.main
 
+import android.content.ComponentName
+import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
@@ -39,11 +41,29 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 앱 아이콘 초기화
+        resetAppIcon()
+
         appTitleTypewriter = binding.appTitleTypewriter
 
         playTypewriterEffectAndShowMainContent()
         setupBottomNavigationView()
         setupStreakUpdateFlowObserver() // 👈 SharedFlow 관찰 함수 호출 (LocalBroadcastManager 대체)
+    }
+
+    private fun resetAppIcon() {
+        val packageManager = packageManager
+        val packageName = packageName
+
+        val defaultComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivity")
+        val angryComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivityAngry")
+
+        packageManager.setComponentEnabledSetting(
+            defaultComponent, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+        )
+        packageManager.setComponentEnabledSetting(
+            angryComponent, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+        )
     }
 
     private fun playTypewriterEffectAndShowMainContent() {

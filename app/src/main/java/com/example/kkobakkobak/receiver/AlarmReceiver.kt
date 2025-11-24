@@ -4,8 +4,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.kkobakkobak.R
@@ -36,6 +38,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 // isActive 및 copy() 사용 (MedicationReminder 모델이 data class이므로 사용 가능)
                 if (reminder != null && reminder.isActive) {
                     showNotification(context, reminderId, category, medName)
+                    changeAppIcon(context, "-Angry")
 
                     val alarmScheduler = AlarmScheduler(context)
                     // 다음 날 같은 시간으로 다시 스케줄링
@@ -98,6 +101,30 @@ class AlarmReceiver : BroadcastReceiver() {
                 description = descriptionText
             }
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun changeAppIcon(context: Context, aliasSuffix: String) {
+        val packageManager = context.packageManager
+        val packageName = context.packageName
+
+        val defaultComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivity")
+        val angryComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivity$aliasSuffix")
+
+        if (aliasSuffix == "-Angry") {
+            packageManager.setComponentEnabledSetting(
+                angryComponent, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+            )
+            packageManager.setComponentEnabledSetting(
+                defaultComponent, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+            )
+        } else {
+            packageManager.setComponentEnabledSetting(
+                defaultComponent, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+            )
+            packageManager.setComponentEnabledSetting(
+                angryComponent, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+            )
         }
     }
 }
