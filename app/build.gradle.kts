@@ -61,6 +61,7 @@ android {
         // 코루틴
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
+        implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
         //kapt로 변경
         val room = "2.8.0"
         implementation("androidx.room:room-ktx:$room")

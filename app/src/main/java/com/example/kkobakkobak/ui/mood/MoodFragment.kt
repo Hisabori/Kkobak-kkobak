@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.kkobakkobak.R
 import com.example.kkobakkobak.data.model.MoodLog
 import com.example.kkobakkobak.databinding.FragmentMoodBinding
 import com.example.kkobakkobak.ui.history.LogHistoryActivity
