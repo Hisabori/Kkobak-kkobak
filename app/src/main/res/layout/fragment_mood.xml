@@ -5,7 +5,6 @@
     android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
     tools:context=".ui.mood.MoodFragment">
 
     <LinearLayout
@@ -86,26 +85,59 @@
             app:cardElevation="2dp"
             android:layout_marginTop="16dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="match_parent">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/chart_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="기분 변화 그래프"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/mood_line_chart"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="기분 변화 그래프"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/mood_line_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/empty_state_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/empty_state_lottie"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:lottie_rawRes="@raw/empty_box"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="아직 기분 기록이 없네요.\n오늘의 기분은 어떠셨나요? 😊"
+                        android:gravity="center"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

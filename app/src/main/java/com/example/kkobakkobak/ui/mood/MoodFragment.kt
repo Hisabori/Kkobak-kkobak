@@ -1,6 +1,7 @@
 package com.example.kkobakkobak.ui.mood
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -73,7 +74,16 @@ class MoodFragment : Fragment() {
 
     private fun observeViewModel() {
         moodViewModel.moodLogs.observe(viewLifecycleOwner) { moodLogs ->
-            updateChart(moodLogs)
+            if (moodLogs.isNullOrEmpty()) {
+                // Show empty state with Lottie animation and message
+                binding.moodLineChart.visibility = View.GONE
+                binding.emptyStateLayout.visibility = View.VISIBLE // Assuming you have a layout with this ID
+                binding.emptyStateLottie.playAnimation() // Assuming you have a Lottie view with this ID
+            } else {
+                binding.moodLineChart.visibility = View.VISIBLE
+                binding.emptyStateLayout.visibility = View.GONE
+                updateChart(moodLogs)
+            }
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
@@ -89,34 +99,44 @@ class MoodFragment : Fragment() {
             setTouchEnabled(true)
             isDragEnabled = true
             setScaleEnabled(true)
+            setDrawGridBackground(false)
+            isHighlightPerDragEnabled = true
+            
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                setDrawGridLines(false)
+                textColor = getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant)
+                granularity = 1f
+            }
 
-            xAxis.position = XAxis.XAxisPosition.BOTTOM
-            xAxis.setDrawGridLines(false)
-            xAxis.textColor = getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant)
-
-            axisLeft.textColor = getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant)
-            axisLeft.setDrawGridLines(true)
+            axisLeft.apply {
+                textColor = getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant)
+                setDrawGridLines(true)
+                gridColor = getThemeColor(com.google.android.material.R.attr.colorOutline)
+            }
             axisRight.isEnabled = false
         }
     }
 
     private fun updateChart(moodLogs: List<MoodLog>) {
-        if (moodLogs.isEmpty()) {
-            binding.moodLineChart.clear()
-            return
-        }
-
         val entries = moodLogs.mapIndexed { index, log ->
             Entry(index.toFloat(), log.mood.toFloat())
         }
 
         val dataSet = LineDataSet(entries, "Mood").apply {
-            color = getThemeColor(androidx.appcompat.R.attr.colorPrimary)
-            valueTextColor = getThemeColor(com.google.android.material.R.attr.colorOnSurface)
-            setCircleColor(color)
-            circleRadius = 4f
-            lineWidth = 2f
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            setDrawFilled(true)
             setDrawValues(false)
+            setDrawCircles(true)
+            
+            val primaryColor = getThemeColor(androidx.appcompat.R.attr.colorPrimary)
+            color = primaryColor
+            setCircleColor(primaryColor)
+            circleRadius = 4f
+            circleHoleRadius = 2f
+
+            val gradient = ContextCompat.getDrawable(requireContext(), R.drawable.chart_gradient)
+            fillDrawable = gradient
         }
 
         val lineData = LineData(dataSet)
@@ -126,6 +146,7 @@ class MoodFragment : Fragment() {
             SimpleDateFormat("MM/dd", Locale.getDefault()).format(Date(log.date))
         }
         binding.moodLineChart.xAxis.valueFormatter = IndexAxisValueFormatter(dates)
+        binding.moodLineChart.xAxis.labelCount = if (dates.size > 7) 7 else dates.size
         binding.moodLineChart.invalidate()
     }
 

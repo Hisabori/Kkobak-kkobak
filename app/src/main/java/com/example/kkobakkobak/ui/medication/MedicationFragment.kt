@@ -11,12 +11,14 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.alarm.AlarmScheduler
 import com.example.kkobakkobak.data.database.AppDatabase
 import com.example.kkobakkobak.data.model.MedicationReminder
 import com.example.kkobakkobak.databinding.FragmentMedicationBinding
+import com.example.kkobakkobak.ui.history.MedicationHistoryActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -69,8 +71,7 @@ class MedicationFragment : Fragment() {
         binding.recyclerViewReminders.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = reminderAdapter
-            // ItemAnimator를 설정하여 부드러운 애니메이션 효과를 줄 수 있습니다.
-            // itemAnimator = DefaultItemAnimator()
+            itemAnimator = DefaultItemAnimator()
         }
 
         binding.tvTodayStatus.setOnClickListener {
@@ -90,7 +91,6 @@ class MedicationFragment : Fragment() {
                     db.medicationIntakeDao().insertReminder(defaultReminder)
                 }
             }
-            // Re-schedule active alarms on app start
             db.medicationIntakeDao().getAllReminders().collectLatest { reminders ->
                 reminders.filter { it.isActive }.forEach { alarmScheduler.schedule(it) }
             }
@@ -99,7 +99,7 @@ class MedicationFragment : Fragment() {
 
     private fun createDefaultReminder(category: String) = MedicationReminder(
         category = category,
-        medicationName = "아직 약이 설정되지 않았어요",
+        medicationName = "어떤 약을 챙겨드릴까요? 💊",
         isActive = false,
         hour = when (category) {
             "morning" -> 9
@@ -122,7 +122,9 @@ class MedicationFragment : Fragment() {
     private fun showEditReminderDialog(reminder: MedicationReminder) {
         val medNameInput = EditText(requireContext()).apply {
             hint = "어떤 약을 드시나요? (예: 비타민D)"
-            setText(reminder.medicationName.takeIf { it != "아직 약이 설정되지 않았어요" })
+            if(reminder.medicationName != "어떤 약을 챙겨드릴까요? 💊") {
+                setText(reminder.medicationName)
+            }
         }
 
         AlertDialog.Builder(requireContext())
@@ -162,7 +164,7 @@ class MedicationFragment : Fragment() {
             alarmScheduler.schedule(reminder)
             if (isAdded) {
                 val timeString = String.format(Locale.getDefault(), "%02d:%02d", reminder.hour, reminder.minute)
-                val message = "${getCategoryKoreanName(reminder.category)} 약, 이제 '${timeString}'에 챙겨드릴게요!"
+                val message = "✅ ${getCategoryKoreanName(reminder.category)} 약, 이제 '${timeString}'에 챙겨드릴게요!"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             }
         }
@@ -174,7 +176,7 @@ class MedicationFragment : Fragment() {
             db.medicationIntakeDao().updateReminder(updatedReminder)
             alarmScheduler.cancel(reminder)
             if (isAdded) {
-                val message = "${getCategoryKoreanName(reminder.category)} 약 알람이 해제되었어요. 편안한 하루 보내세요."
+                val message = "${getCategoryKoreanName(reminder.category)} 약 알림이 해제되었어요. 편안한 하루 보내세요."
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             }
         }
