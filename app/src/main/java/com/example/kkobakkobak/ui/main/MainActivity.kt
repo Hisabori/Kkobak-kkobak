@@ -6,7 +6,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.activity.viewModels // 👈 ViewModel 사용을 위해 추가
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -22,47 +22,53 @@ import com.example.kkobakkobak.ui.settings.SettingsFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-// HomeFragment import가 필요하다면 추가하세요:
-import com.example.kkobakkobak.ui.main.HomeFragment // 👈 HomeFragment의 실제 경로로 수정
+// 👇 HomeFragment 경로가 맞는지 확인하세요
+import com.example.kkobakkobak.ui.main.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appTitleTypewriter: TextView
-    private val viewModel: MainViewModel by viewModels() // 👈 ViewModel 초기화
+    private val viewModel: MainViewModel by viewModels()
 
     private var selectedTab: Int = R.id.navigation_home
 
-    override fun onCreate(savedInstanceState: Bundle?) { // 👈 onCreate 함수 복구
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // enableEdgeToEdge() // (선택) 에지 투 에지
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 앱 아이콘 초기화
-        resetAppIcon()
+        // 👇 [테스트] 앱이 실행되면 아이콘을 'Sad'로 변경 (테스트 후 삭제 가능)
+        changeAppIcon(isSad = true)
 
         appTitleTypewriter = binding.appTitleTypewriter
 
         playTypewriterEffectAndShowMainContent()
         setupBottomNavigationView()
-        setupStreakUpdateFlowObserver() // 👈 SharedFlow 관찰 함수 호출 (LocalBroadcastManager 대체)
+        setupStreakUpdateFlowObserver()
     }
 
-    private fun resetAppIcon() {
+    // 👇 아이콘 변경 로직 (PackageManager 사용)
+    private fun changeAppIcon(isSad: Boolean) {
         val packageManager = packageManager
-        val packageName = packageName
+        val angryComponent = ComponentName(this, "com.example.kkobakkobak.ui.main.MainActivityAngry")
+        val sadComponent = ComponentName(this, "com.example.kkobakkobak.ui.main.MainActivitySad")
 
-        val defaultComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivity")
-        val angryComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivityAngry")
-
+        // 1. Sad 아이콘 켜기/끄기
         packageManager.setComponentEnabledSetting(
-            defaultComponent, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+            sadComponent,
+            if (isSad) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
         )
+
+        // 2. Angry 아이콘 끄기/켜기
         packageManager.setComponentEnabledSetting(
-            angryComponent, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+            angryComponent,
+            if (isSad) PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+            else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
         )
     }
 
@@ -82,21 +88,17 @@ class MainActivity : AppCompatActivity() {
             delay(1000)
             appTitleTypewriter.visibility = View.GONE
 
-            // HomeFragment로 교체
+            // 타이핑 효과 끝난 후 홈 화면으로 이동
             replaceFragment(HomeFragment())
         }
     }
 
-    // 👈 SharedFlow를 관찰하는 함수 추가 (LocalBroadcastManager 대체)
     private fun setupStreakUpdateFlowObserver() {
-        // Activity 생명주기에 맞춰 Flow 관찰 시작
         lifecycleScope.launch {
             viewModel.streakUpdateEvent.collect {
                 val current = supportFragmentManager.findFragmentById(R.id.fragment_container)
-                // LogFragment가 화면에 있다면 updateStreakDisplay() 호출
-                // LogFragment가 'ui/log' 패키지에 있음을 가정
                 if (current is LogFragment) {
-                    current.updateStreakDisplay() // LogFragment에 이 메서드가 있다고 가정
+                    current.updateStreakDisplay()
                 }
             }
         }
@@ -140,11 +142,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 👇 [수정됨] IllegalStateException 방지를 위해 commitAllowingStateLoss 사용
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-            .commit()
+            .commitAllowingStateLoss()
     }
-
-    /* 👈 이전의 setupStreakUpdateReceiver 함수는 제거되었습니다. */
 }

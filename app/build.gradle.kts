@@ -105,6 +105,9 @@ android {
         // MPAndroidChart
         implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+        // WorkManager
+        implementation("androidx.work:work-runtime-ktx:2.9.0")
+
         val tikxml_version = "0.8.13" // 적절한 안정 버전 사용
 
         //implementation("com.tickaroo.tikxml:core:$tikxml_version")

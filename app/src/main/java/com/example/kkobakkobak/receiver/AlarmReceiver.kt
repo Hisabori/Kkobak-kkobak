@@ -10,13 +10,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.data.database.AppDatabase
 import com.example.kkobakkobak.ui.main.MainActivity
+import com.example.kkobakkobak.worker.IconChangeWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.kkobakkobak.alarm.AlarmScheduler
+import java.util.concurrent.TimeUnit
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -32,20 +37,37 @@ class AlarmReceiver : BroadcastReceiver() {
             val scope = CoroutineScope(Dispatchers.IO)
 
             scope.launch {
-                // DAO의 getReminderById 호출 (DAO 업데이트로 오류 해결)
                 val reminder = db.medicationIntakeDao().getReminderById(reminderId)
 
-                // isActive 및 copy() 사용 (MedicationReminder 모델이 data class이므로 사용 가능)
                 if (reminder != null && reminder.isActive) {
                     showNotification(context, reminderId, category, medName)
-                    changeAppIcon(context, "-Angry")
+
+                    // Schedule icon changes only for morning, lunch, dinner
+                    if (category.lowercase() in listOf("morning", "lunch", "dinner")) {
+                        scheduleIconChange(context, ".ui.main.MainActivitySad", 1)
+                        scheduleIconChange(context, ".ui.main.MainActivityAngry", 10)
+                    }
 
                     val alarmScheduler = AlarmScheduler(context)
-                    // 다음 날 같은 시간으로 다시 스케줄링
                     alarmScheduler.schedule(reminder.copy(id = reminderId))
                 }
             }
         }
+    }
+
+    private fun scheduleIconChange(context: Context, aliasName: String, delayMinutes: Long) {
+        val workManager = WorkManager.getInstance(context)
+        val data = Data.Builder()
+            .putString(IconChangeWorker.ALIAS_NAME_KEY, context.packageName + aliasName)
+            .build()
+
+        val workRequest = OneTimeWorkRequestBuilder<IconChangeWorker>()
+            .setInitialDelay(delayMinutes, TimeUnit.MINUTES)
+            .setInputData(data)
+            .addTag("ICON_CHANGE_WORK") // Add a tag to the work request
+            .build()
+
+        workManager.enqueue(workRequest)
     }
 
     private fun showNotification(context: Context, reminderId: Int, category: String, medName: String) {
@@ -55,7 +77,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val title = "${category} 복약 시간입니다!"
         val message = "복용 약물: ${medName}"
 
-        // 1. 메인 액티비티로 이동하는 Intent
         val contentIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -66,7 +87,6 @@ class AlarmReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // 2. '복용 완료' 버튼을 눌렀을 때 처리하는 Intent (MedicationTakenReceiver로 보냄)
         val takenIntent = Intent(context, MedicationTakenReceiver::class.java).apply {
             putExtra("NOTIFICATION_ID", reminderId)
             putExtra("CATEGORY", category)
@@ -101,30 +121,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 description = descriptionText
             }
             notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    private fun changeAppIcon(context: Context, aliasSuffix: String) {
-        val packageManager = context.packageManager
-        val packageName = context.packageName
-
-        val defaultComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivity")
-        val angryComponent = ComponentName(packageName, "com.example.kkobakkobak.ui.main.MainActivity$aliasSuffix")
-
-        if (aliasSuffix == "-Angry") {
-            packageManager.setComponentEnabledSetting(
-                angryComponent, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
-            )
-            packageManager.setComponentEnabledSetting(
-                defaultComponent, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
-            )
-        } else {
-            packageManager.setComponentEnabledSetting(
-                defaultComponent, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
-            )
-            packageManager.setComponentEnabledSetting(
-                angryComponent, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
-            )
         }
     }
 }

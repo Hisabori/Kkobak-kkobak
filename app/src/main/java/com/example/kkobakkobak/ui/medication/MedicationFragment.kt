@@ -150,13 +150,16 @@ class MedicationFragment : Fragment() {
         medNameBuilder.show()
     }
 
-    // 시간 선택기 표시
+    // 시간 선택기 표시 (수정됨: 안전한 Context 사용)
     private fun showTimePicker(reminder: MedicationReminder) {
+        // ✅ Context가 null이면(화면에 안 붙어있으면) 함수를 종료하여 크래시 방지
+        val ctx = context ?: return
+
         val initialHour = reminder.hour.takeIf { it != -1 } ?: Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val initialMinute = reminder.minute.takeIf { it != -1 } ?: Calendar.getInstance().get(Calendar.MINUTE)
 
         TimePickerDialog(
-            requireContext(),
+            ctx, // ✅ requireContext() 대신 안전한 ctx 사용
             { _, selectedHour, selectedMinute ->
                 val updatedReminder = reminder.copy(
                     hour = selectedHour,
