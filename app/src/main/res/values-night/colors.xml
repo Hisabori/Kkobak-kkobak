@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Fluent Design Inspired Dark Theme Colors -->
-
-    <!-- Primary (Accent) -->
-    <color name="colorPrimary">#A8C8FF</color>
+    <!-- Key Colors -->
+    <color name="colorPrimary">#A8C8FF</color> <!-- Toss Blue (Light for Dark Theme) -->
     <color name="colorOnPrimary">#00315E</color>
     <color name="colorPrimaryContainer">#004786</color>
     <color name="colorOnPrimaryContainer">#D4E3FF</color>
 
-    <!-- Secondary -->
+    <!-- Secondary Colors -->
     <color name="colorSecondary">#BEC6DC</color>
     <color name="colorOnSecondary">#283141</color>
     <color name="colorSecondaryContainer">#3F4758</color>
     <color name="colorOnSecondaryContainer">#DAE2F9</color>
 
-    <!-- Background & Surface -->
-    <color name="colorBackground">#1A1C1E</color>
+    <!-- Neutral Colors -->
+    <color name="colorBackground">#111318</color> <!-- Dark Background -->
     <color name="colorOnBackground">#E3E2E6</color>
-    <color name="colorSurface">#1A1C1E</color>
+    <color name="colorSurface">#1B1D22</color> <!-- Card Background -->
     <color name="colorOnSurface">#E3E2E6</color>
-
-    <!-- Surface Variants (for cards, etc.) -->
     <color name="colorSurfaceVariant">#44474E</color>
     <color name="colorOnSurfaceVariant">#C4C6CF</color>
 
-    <!-- Outlines -->
+    <!-- Etc -->
     <color name="colorOutline">#8E9099</color>
+    <color name="colorError">#FFB4AB</color>
 
 </resources>

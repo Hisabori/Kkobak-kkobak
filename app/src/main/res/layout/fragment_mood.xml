@@ -5,6 +5,7 @@
     android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorBackground"
     tools:context=".ui.mood.MoodFragment">
 
     <LinearLayout
@@ -17,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/card_background_dark_blue"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,7 +39,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_mood_neutral"
-                        app:tint="@color/icon_mood_yellow"
+                        app:tint="?attr/colorPrimary"
                         android:contentDescription="기분 아이콘" />
 
                     <TextView
@@ -56,75 +57,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="로그 추가"
-                    android:backgroundTint="?attr/colorPrimaryContainer"
-                    android:textColor="?attr/colorOnPrimaryContainer"
-                    app:cornerRadius="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
                 <Button
                     android:id="@+id/btn_view_history_mood_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="기록 보기"
-                    android:backgroundTint="?attr/colorPrimaryContainer"
-                    android:textColor="?attr/colorOnPrimaryContainer"
-                    app:cornerRadius="8dp"
-                    android:layout_marginBottom="16dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="오늘의 기분 기록하기"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="4dp"/>
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
                 <Button
                     android:id="@+id/btn_record_mood"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="기분 기록하기"
-                    android:backgroundTint="?attr/colorPrimaryContainer"
-                    android:textColor="?attr/colorOnPrimaryContainer"
-                    android:layout_marginTop="8dp"
-                    app:cornerRadius="8dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="최근 기분 변화 살펴보기"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"/>
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/mood_chart_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/card_background_dark_blue"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:padding="16dp"
+            app:cardElevation="2dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="기분 변화 그래프"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="18sp"
-                android.textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/mood_line_chart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="기분 변화 그래프"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/mood_line_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

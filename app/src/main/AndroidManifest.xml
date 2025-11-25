@@ -24,10 +24,10 @@
         </activity>
 
         <activity-alias
-            android:name=".ui.main.MainActivityAngry"
+            android:name=".ui.main.MainActivitySad"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_angry"
+            android:icon="@drawable/ic_mood_bad"
             android:targetActivity=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,10 +36,10 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".ui.main.MainActivitySad"
+            android:name=".ui.main.MainActivityAngry"
             android:enabled="false"
             android:exported="true"
-            android:icon="@drawable/ic_mood_bad"
+            android:icon="@mipmap/ic_launcher_angry"
             android:targetActivity=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

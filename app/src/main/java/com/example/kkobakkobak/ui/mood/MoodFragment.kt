@@ -1,15 +1,16 @@
 package com.example.kkobakkobak.ui.mood
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.kkobakkobak.R
 import com.example.kkobakkobak.data.model.MoodLog
 import com.example.kkobakkobak.databinding.FragmentMoodBinding
 import com.example.kkobakkobak.ui.history.LogHistoryActivity
@@ -90,9 +91,9 @@ class MoodFragment : Fragment() {
 
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.setDrawGridLines(false)
-            xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
+            xAxis.textColor = getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant)
 
-            axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
+            axisLeft.textColor = getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant)
             axisLeft.setDrawGridLines(true)
             axisRight.isEnabled = false
         }
@@ -109,8 +110,8 @@ class MoodFragment : Fragment() {
         }
 
         val dataSet = LineDataSet(entries, "Mood").apply {
-            color = ContextCompat.getColor(requireContext(), R.color.accent_blue)
-            valueTextColor = ContextCompat.getColor(requireContext(), R.color.text_primary)
+            color = getThemeColor(androidx.appcompat.R.attr.colorPrimary)
+            valueTextColor = getThemeColor(com.google.android.material.R.attr.colorOnSurface)
             setCircleColor(color)
             circleRadius = 4f
             lineWidth = 2f
@@ -125,6 +126,13 @@ class MoodFragment : Fragment() {
         }
         binding.moodLineChart.xAxis.valueFormatter = IndexAxisValueFormatter(dates)
         binding.moodLineChart.invalidate()
+    }
+
+    @ColorInt
+    private fun getThemeColor(@AttrRes attrRes: Int): Int {
+        val typedValue = TypedValue()
+        requireContext().theme.resolveAttribute(attrRes, typedValue, true)
+        return typedValue.data
     }
 
     override fun onDestroyView() {
