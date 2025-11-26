@@ -78,5 +78,6 @@
     <string name="inpatient_max_format">최대: %1$d명 (%2$s)</string>
     <string name="inpatient_loading">로딩 중...</string>
     <string name="inpatient_load_failed">로드 실패</string>
+        <string name="empty_state_message">아직 기분 기록이 없네요.\n오늘의 기분은 어떠셨나요? 😊</string>
 
 </resources>
