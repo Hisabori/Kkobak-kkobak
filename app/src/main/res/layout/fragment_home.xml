@@ -1,190 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:background="?attr/colorSurface"
-
-    tools:context=".ui.main.HomeFragment">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="홈"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_drop_down_white_24dp"
-            android:layout_marginStart="4dp"
-            app:tint="?attr/colorOnSurface"
-            android:contentDescription="드롭다운 화살표" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_greeting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="안녕하세요!"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
-
-    <!-- ✅ 추가된 부분 -->
-    <TextView
-        android:id="@+id/tvTodayStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="오늘의 상태를 불러오는 중..."
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="16sp"
-        android:layout_marginBottom="24dp" />
-    <!-- ✅ 여기까지 -->
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardMedication"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp">
+        android:orientation="vertical"
+        android:padding="20dp"
+        tools:context=".ui.main.HomeFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tv_greeting"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="오늘도 약과 함께, 당신의 빛나는 하루를 응원합니다."
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="18sp"
-                android:textStyle="italic"
-                android:layout_marginBottom="8dp"/>
+                android:layout_weight="1"
+                android:text="@string/home_greeting_default"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface" />
 
-            <TextView
-                android:id="@+id/tv_streak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🔥 꾸준히 약을 챙겨보세요!"
-                android:textSize="18sp"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:layout_marginBottom="8dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="다음 투약 시간: 오후 8시 30분"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="16sp"/>
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_settings_black_24dp"
+                app:tint="?attr/colorOnSurfaceVariant"
+                android:contentDescription="설정"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/btn_add_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그 추가"
-        android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnPrimary"
-        app:cornerRadius="8dp"
-        android:layout_marginBottom="8dp"/>
-
-    <Button
-        android:id="@+id/btn_view_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="기록 보기"
-        android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnPrimary"
-        app:cornerRadius="8dp"
-        android:layout_marginBottom="8dp"/>
-
-    <Button
-        android:id="@+id/btn_record_mood"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="기분 기록"
-        android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnPrimary"
-        app:cornerRadius="8dp"
-        android:layout_marginBottom="24dp"/>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mood_report_summary_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp">
-
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMedication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="?attr/colorPrimaryContainer"
+            app:cardCornerRadius="24dp"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_mood_neutral"
-                    app:tint="?attr/colorPrimary"
-                    android:contentDescription="기분 아이콘" />
+                android:orientation="vertical"
+                android:padding="24dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="내 기분 리포트 요약"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp"
+                    android:text="@string/med_card_title"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:layout_marginStart="8dp" />
-            </LinearLayout>
+                    android:alpha="0.7"
+                    android:layout_marginBottom="4dp"/>
 
-            <TextView
-                android:id="@+id/tv_mood_summary"
+                <TextView
+                    android:id="@+id/tv_next_dose_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오후 8:30"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tv_streak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/today_streak_message"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:layout_marginBottom="16dp"/>
+
+                <Button
+                    android:id="@+id/btn_quick_take_inside"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_quick_take"
+                    android:backgroundTint="?attr/colorOnPrimaryContainer"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:icon="@drawable/ic_check"
+                    app:iconTint="?attr/colorOnPrimary"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="빠른 메뉴"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_record_mood"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/btn_record_mood"
+                android:textSize="14sp"
+                app:cornerRadius="16dp"
+                android:layout_marginEnd="8dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_mood_good"
+                app:iconGravity="textStart"
+                android:backgroundTint="?attr/colorSurfaceVariant"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:iconTint="?attr/colorOnSurfaceVariant"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_view_history"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/btn_view_calendar"
+                android:textSize="14sp"
+                app:cornerRadius="16dp"
+                android:layout_marginStart="8dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_history"
+                app:iconGravity="textStart"
+                android:backgroundTint="?attr/colorSurfaceVariant"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:iconTint="?attr/colorOnSurfaceVariant"/>
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mood_report_summary_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="최근 기분 기록이 없습니다."
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <Button
-                android:id="@+id/btn_view_mood_details"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/mood_report_title"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btn_view_mood_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/btn_mood_detail"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="14sp"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="4dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_mood_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mood_summary_empty"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="#F1F3F5"
+            app:cardCornerRadius="16dp"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="자세히 보기"
-                android:backgroundTint="?attr/colorSecondaryContainer"
-                android:textColor="?attr/colorOnSecondaryContainer"
-                app:cornerRadius="8dp"
-                android:layout_gravity="end"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                android:orientation="vertical"
+                android:padding="20dp">
 
-</LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tip_title"
+                        android:textColor="#212529"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  |  "
+                        android:textColor="#ADB5BD"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tip_source_label"
+                        android:textColor="#868E96"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_today_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="팁을 불러오는 중..."
+                    android:textColor="#495057"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

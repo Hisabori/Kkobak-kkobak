@@ -67,6 +67,20 @@
         <item>오늘도 빛나는 당신, 약 챙기기도 잊지 마세요!</item>
     </string-array>
 
+        <string-array name="health_tips_dataset">
+            <item>하루 30분 햇볕을 쬐면 세로토닌이 생성되어 우울감 해소에 큰 도움이 됩니다. (출처: 대한신경정신의학회)</item>
+            <item>잠들기 1시간 전 스마트폰 사용을 줄이면 수면의 질이 획기적으로 개선됩니다. (출처: 국립정신건강센터)</item>
+            <item>규칙적인 식사는 생체 리듬을 조절하여 약물 순응도를 높여줍니다. (출처: 보건복지부)</item>
+            <item>가벼운 산책은 스트레스 호르몬인 코르티솔 수치를 낮추는 효과가 있습니다. (출처: 미국심리학회)</item>
+            <item>물 한 잔으로 하루를 시작하세요. 신진대사를 깨우고 독소를 배출합니다. (출처: 세계보건기구 WHO)</item>
+            <item>감정을 글로 적는 것만으로도 뇌의 편도체가 안정되는 효과가 있습니다. (출처: 뇌과학 연구)</item>
+            <item>작은 성취감이 자존감을 높입니다. 오늘 아주 사소한 목표를 달성해보세요. (출처: 긍정심리학)</item>
+        </string-array>
+
+        <string name="tip_title">💡 오늘의 건강 꿀팁</string>
+        <string name="tip_source_label">Verified Source</string>
+
+
     <!-- 하단 탭: 입원현황 -->
     <string name="navigation_inpatient_title">입원현황</string>
 

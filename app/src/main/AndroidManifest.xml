@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
@@ -13,6 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kkobakkobak">
 
+        <meta-data
+            android:name="com.samsung.support.ongoing_activity"
+            android:value="true" />
+
         <activity
             android:name="com.example.kkobakkobak.ui.main.MainActivity"
             android:enabled="true"
@@ -23,24 +33,21 @@
             </intent-filter>
         </activity>
 
-        <activity-alias
-            android:name=".ui.main.MainActivitySad"
-            android:enabled="false"
-            android:exported="true"
-            android:icon="@drawable/ic_mood_bad"
-            android:targetActivity=".ui.main.MainActivity">
+        <service
+            android:name=".ui.main.MedicationNowBarService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync">
+        </service>
+
+        <activity-alias android:name=".ui.main.MainActivitySad" android:targetActivity=".ui.main.MainActivity" android:enabled="false" android:exported="true" android:icon="@drawable/ic_mood_bad">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
 
-        <activity-alias
-            android:name=".ui.main.MainActivityAngry"
-            android:enabled="false"
-            android:exported="true"
-            android:icon="@mipmap/ic_launcher_angry"
-            android:targetActivity=".ui.main.MainActivity">
+        <activity-alias android:name=".ui.main.MainActivityAngry" android:targetActivity=".ui.main.MainActivity" android:enabled="false" android:exported="true" android:icon="@mipmap/ic_launcher_angry">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,7 +57,6 @@
         <activity android:name=".ui.record.RecordActivity" />
         <activity android:name=".ui.log.LogActivity" />
         <activity android:name=".ui.history.LogHistoryActivity" />
-
         <receiver android:name=".receiver.AlarmReceiver" android:exported="false" />
         <receiver android:name=".receiver.MedicationTakenReceiver" android:exported="false" />
         <receiver android:name=".receiver.BootReceiver" android:exported="false">
@@ -60,5 +66,9 @@
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+
+
+
     </application>
 </manifest>
