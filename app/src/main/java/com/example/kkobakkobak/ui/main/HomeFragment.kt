@@ -58,14 +58,16 @@ class HomeFragment : Fragment() {
         // 1. 🔒 화면 가리기
         applyGlassmorphismBlur(binding.root)
 
-        // 2. 🛠️ 생체 인증 준비
+        // 2. 🛠️ 생체 인증 준비 (owner를 Activity로 설정하여 안정성 확보)
         setupBiometricAuth()
 
         // 3. 🔔 권한 체크 (알림 + Now Bar 격상 권한)
         checkNotificationPermission()
 
-        // 4. 🚀 자동 지문 인증 시작
-        authenticateUser()
+        // 4. 🚀 자동 지문 인증 시작 (핵심 수정: FragmentManager 트랜잭션 충돌을 피하기 위해 View Post로 지연 실행)
+        view.post {
+            authenticateUser()
+        }
 
         // 5. 화면 터치 시 재시도
         binding.root.setOnClickListener {
@@ -108,15 +110,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun startNowBarService(message: String) {
+        val intent = Intent(requireContext(), MedicationNowBarService::class.java).apply {
+            putExtra("status", message)
+        }
+        // FOREGROUND_SERVICE_DATA_SYNC를 사용하므로 O(26) 이상에서 startForegroundService 사용
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val intent = Intent(requireContext(), MedicationNowBarService::class.java).apply {
-                putExtra("status", message)
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                requireContext().startForegroundService(intent)
-            } else {
-                requireContext().startService(intent)
-            }
+            requireContext().startForegroundService(intent)
+        } else {
+            // O 미만에서는 startService 사용
+            requireContext().startService(intent)
         }
     }
 
@@ -148,30 +150,31 @@ class HomeFragment : Fragment() {
 
     private fun setupBiometricAuth() {
         executor = ContextCompat.getMainExecutor(requireContext())
-        biometricPrompt = BiometricPrompt(this, executor,
+        // BiometricPrompt 초기화 시 Fragment(this) 대신 Activity(requireActivity())를 owner로 사용
+        biometricPrompt = BiometricPrompt(requireActivity(), executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     removeBlur(binding.root)
                     binding.root.setOnClickListener(null)
-                    Toast.makeText(context, "환영합니다!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "안녕! 오늘도 파이팅!", Toast.LENGTH_SHORT).show()
                 }
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
                     if (errorCode !in listOf(BiometricPrompt.ERROR_USER_CANCELED, BiometricPrompt.ERROR_NEGATIVE_BUTTON)) {
-                        Toast.makeText(context, "인증 실패: $errString", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "실페함: $errString", Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(context, "지문 불일치", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "너 맞니?", Toast.LENGTH_SHORT).show()
                 }
             })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("잠금 해제")
-            .setSubtitle("생체 정보를 인증해주세요")
-            .setNegativeButtonText("취소")
+            .setTitle("지문으로 보호 중!")
+            .setSubtitle("너의 마음일기는 소중하니까:)")
+            .setNegativeButtonText("인증  취소")
             .build()
     }
 

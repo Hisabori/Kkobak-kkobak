@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 앱 이름 및 숏컷 -->
     <string name="app_name">꾸박꾸박</string>
     <string name="shortcut_add_log_long">새로운 기록 추가 (길게)</string>
     <string name="shortcut_add_log_short">기록 추가</string>
     <string name="shortcut_view_history_long">과거 기록 보기 (길게)</string>
     <string name="shortcut_view_history_short">기록 보기</string>
 
-    <!-- 메시지 및 버튼 텍스트 -->
+    <string name="home_greeting_default">오늘도 건강한 하루 보내세요! ☀️</string>
+    <string name="home_today_status_default">오늘 예정된 투약 일정을 확인해보세요.</string>
+    <string name="med_card_title">다음 투약 알림</string>
+    <string name="med_card_empty">오늘 남은 약이 없어요! 🎉</string>
+    <string name="med_card_message">꾸준함이 건강을 만듭니다.</string>
+    <string name="mood_summary_empty">아직 기록된 기분이 없어요.\n오늘 기분은 어떠신가요? 😊</string>
+
+    <string name="btn_quick_take">💊 복용 완료</string>
+    <string name="btn_record_mood">📝 기분 기록</string>
+    <string name="btn_view_calendar">📅 달력 보기</string>
+    <string name="btn_mood_detail">분석 보기</string>
+
     <string name="today_streak_message">🔥 꾸준히 약을 챙겨보세요!</string>
     <string name="set_alarm_button">설정</string>
     <string name="set_med_name_button"> 약 이름 설정</string>
@@ -16,13 +26,11 @@
     <string name="add_log_button">로그 추가</string>
     <string name="view_history_button">로그 기록 보기</string>
 
-    <!-- 시간대 카테고리 -->
     <string name="morning_category">아침</string>
     <string name="lunch_category">점심</string>
     <string name="dinner_category">저녁</string>
     <string name="bedtime_category">취침 전</string>
 
-    <!-- 기록 화면 -->
     <string name="record_screen_title">기록</string>
     <string name="today_record_section_title">오늘의 기록</string>
     <string name="emotion_label">감정</string>
@@ -51,7 +59,6 @@
     <string name="last_recorded" />
     <string name="show_all_alarms" />
 
-    <!-- 새로운 내비게이션 항목 -->
     <string name="navigation_home_title">홈</string>
     <string name="navigation_medication_title">투약</string>
     <string name="navigation_mood_title">기분</string>
@@ -59,7 +66,6 @@
     <string name="navigation_settings_title">설정</string>
     <string name="navigation_development_title">계발중</string>
 
-    <!-- 격려 메시지 배열 -->
     <string-array name="encouragement_messages">
         <item>오늘도 당신의 건강을 응원해요!</item>
         <item>꾸준함 속에 건강이 자라요 :)</item>
@@ -67,24 +73,22 @@
         <item>오늘도 빛나는 당신, 약 챙기기도 잊지 마세요!</item>
     </string-array>
 
-        <string-array name="health_tips_dataset">
-            <item>하루 30분 햇볕을 쬐면 세로토닌이 생성되어 우울감 해소에 큰 도움이 됩니다. (출처: 대한신경정신의학회)</item>
-            <item>잠들기 1시간 전 스마트폰 사용을 줄이면 수면의 질이 획기적으로 개선됩니다. (출처: 국립정신건강센터)</item>
-            <item>규칙적인 식사는 생체 리듬을 조절하여 약물 순응도를 높여줍니다. (출처: 보건복지부)</item>
-            <item>가벼운 산책은 스트레스 호르몬인 코르티솔 수치를 낮추는 효과가 있습니다. (출처: 미국심리학회)</item>
-            <item>물 한 잔으로 하루를 시작하세요. 신진대사를 깨우고 독소를 배출합니다. (출처: 세계보건기구 WHO)</item>
-            <item>감정을 글로 적는 것만으로도 뇌의 편도체가 안정되는 효과가 있습니다. (출처: 뇌과학 연구)</item>
-            <item>작은 성취감이 자존감을 높입니다. 오늘 아주 사소한 목표를 달성해보세요. (출처: 긍정심리학)</item>
-        </string-array>
+    <string-array name="health_tips_dataset">
+        <item>하루 30분 햇볕을 쬐면 세로토닌이 생성되어 우울감 해소에 큰 도움이 됩니다. (출처: 대한신경정신의학회)</item>
+        <item>잠들기 1시간 전 스마트폰 사용을 줄이면 수면의 질이 획기적으로 개선됩니다. (출처: 국립정신건강센터)</item>
+        <item>규칙적인 식사는 생체 리듬을 조절하여 약물 순응도를 높여줍니다. (출처: 보건복지부)</item>
+        <item>가벼운 산책은 스트레스 호르몬인 코르티솔 수치를 낮추는 효과가 있습니다. (출처: 미국심리학회)</item>
+        <item>물 한 잔으로 하루를 시작하세요. 신진대사를 깨우고 독소를 배출합니다. (출처: 세계보건기구 WHO)</item>
+        <item>감정을 글로 적는 것만으로도 뇌의 편도체가 안정되는 효과가 있습니다. (출처: 뇌과학 연구)</item>
+        <item>작은 성취감이 자존감을 높입니다. 오늘 아주 사소한 목표를 달성해보세요. (출처: 긍정심리학)</item>
+    </string-array>
 
-        <string name="tip_title">💡 오늘의 건강 꿀팁</string>
-        <string name="tip_source_label">Verified Source</string>
+    <string name="tip_title">💡 오늘의 건강 꿀팁</string>
+    <string name="tip_source_label">Verified Source</string>
 
 
-    <!-- 하단 탭: 입원현황 -->
     <string name="navigation_inpatient_title">입원현황</string>
 
-    <!-- Inpatient 화면 텍스트 -->
     <string name="inpatient_title">입원 환자 현황 (2020)</string>
     <string name="inpatient_last_updated_prefix">마지막 업데이트:</string>
     <string name="inpatient_avg_format">평균: %1$d명</string>
@@ -92,6 +96,6 @@
     <string name="inpatient_max_format">최대: %1$d명 (%2$s)</string>
     <string name="inpatient_loading">로딩 중...</string>
     <string name="inpatient_load_failed">로드 실패</string>
-        <string name="empty_state_message">아직 기분 기록이 없네요.\n오늘의 기분은 어떠셨나요? 😊</string>
+    <string name="empty_state_message">아직 기분 기록이 없네요.\n오늘의 기분은 어떠셨나요? 😊</string>
 
 </resources>
