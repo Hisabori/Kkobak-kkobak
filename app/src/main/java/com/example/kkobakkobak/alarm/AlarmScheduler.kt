@@ -13,15 +13,14 @@ class AlarmScheduler(private val context: Context) {
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    // MedicationReminder 객체를 받아 알람 스케줄링
+    // MedicationReminder 객체를 받아 알람 스케줄링 (기존 로직)
     fun schedule(reminder: MedicationReminder) {
-        // ID를 RequestCode로 사용 (고유성 보장)
         val requestCode = reminder.id
 
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("CATEGORY", reminder.category)
             putExtra("MEDICATION_NAME", reminder.medicationName)
-            putExtra("REMINDER_ID", reminder.id) // 알람 발생 시 DB 업데이트를 위해 ID 전달
+            putExtra("REMINDER_ID", reminder.id)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -37,14 +36,12 @@ class AlarmScheduler(private val context: Context) {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
 
-            // 만약 이미 지난 시간이면 다음 날로 설정
             if (before(Calendar.getInstance())) {
                 add(Calendar.DATE, 1)
             }
         }
 
         try {
-            // 정확한 시간에 알람 설정
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 alarmTime.timeInMillis,
@@ -56,9 +53,44 @@ class AlarmScheduler(private val context: Context) {
         }
     }
 
-    // MedicationReminder 객체를 받아 알람 취소
+    // 🔔 [추가] 스누즈 알람 스케줄링 함수
+    fun scheduleSnooze(reminder: MedicationReminder, delayMinutes: Int) {
+        val requestCode = reminder.id + 1000
+
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("CATEGORY", reminder.category)
+            putExtra("MEDICATION_NAME", reminder.medicationName)
+            putExtra("REMINDER_ID", reminder.id)
+            putExtra("IS_SNOOZE", true) // 스누즈 알람임을 표시
+        }
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val snoozeTime = Calendar.getInstance().apply {
+            add(Calendar.MINUTE, delayMinutes)
+        }
+
+        try {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                snoozeTime.timeInMillis,
+                pendingIntent
+            )
+            Log.d("AlarmScheduler", "Scheduled snooze alarm for ${reminder.category} in ${delayMinutes} mins, Snooze ID: $requestCode")
+        } catch (e: SecurityException) {
+            Log.e("AlarmScheduler", "Failed to schedule snooze alarm due to security exception: ${e.message}")
+        }
+    }
+
+
+    // MedicationReminder 객체를 받아 알람 취소 (기존 로직)
     fun cancel(reminder: MedicationReminder) {
-        val requestCode = reminder.id // 스케줄링할 때 사용한 동일한 requestCode 사용
+        val requestCode = reminder.id
         val intent = Intent(context, AlarmReceiver::class.java)
 
         val pendingIntent = PendingIntent.getBroadcast(

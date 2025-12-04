@@ -2,6 +2,7 @@ package com.example.kkobakkobak.ui.main
 
 import android.animation.Animator
 import android.content.ComponentName
+import android.content.Intent // 👈 import 추가
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
@@ -19,8 +20,8 @@ import com.example.kkobakkobak.ui.path.PathFragment
 import com.example.kkobakkobak.ui.settings.SettingsFragment
 import kotlinx.coroutines.launch
 
-// 👇 HomeFragment 경로 확인
 import com.example.kkobakkobak.ui.main.HomeFragment
+import com.example.kkobakkobak.ui.alarm.AlarmFullscreenActivity // 👈 신규 Activity import
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,7 +48,26 @@ class MainActivity : AppCompatActivity() {
         // 3. 기타 설정
         setupBottomNavigationView()
         setupStreakUpdateFlowObserver()
+
+        // 🔔 [추가] 테스트 알람 버튼 설정
+        setupTestAlarmButton()
     }
+
+    // 🔔 [추가] 테스트 버튼 클릭 리스너 구현
+    private fun setupTestAlarmButton() {
+        binding.testAlarmButton.setOnClickListener {
+            val testIntent = Intent(this, AlarmFullscreenActivity::class.java).apply {
+                // 테스트 ID 999 사용 (DB에 없는 ID여도 테스트는 가능)
+                putExtra("REMINDER_ID", 999)
+                putExtra("CATEGORY", "비상약")
+                // 저장된 정보를 활용하여 자낙스 0.25mg로 테스트 메시지 설정
+                putExtra("MEDICATION_NAME", "자낙스 0.25mg (공황 비상약)")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(testIntent)
+        }
+    }
+
 
     private fun setupSplashAnimation() {
         // XML에서 autoPlay=true로 설정했으므로 자동 재생됨
