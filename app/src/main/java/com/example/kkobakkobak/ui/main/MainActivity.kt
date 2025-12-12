@@ -1,3 +1,5 @@
+// 수정 시작: hisabori/kkobak-kkobak/Kkobak-kkobak-29057115cdcc12e9d4b942881ac29951e9270d0a/app/src/main/java/com/example/kkobakkobak/ui/main/MainActivity.kt
+
 package com.example.kkobakkobak.ui.main
 
 import android.animation.Animator
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 
 import com.example.kkobakkobak.ui.main.HomeFragment
 import com.example.kkobakkobak.ui.alarm.AlarmFullscreenActivity // 👈 신규 Activity import
+import android.app.AlertDialog // 👈 import 추가
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,22 +52,30 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigationView()
         setupStreakUpdateFlowObserver()
 
-        // 🔔 [추가] 테스트 알람 버튼 설정
-        setupTestAlarmButton()
+        // 🔔 [수정] 테스트 알람 버튼 설정을 긴급 비상약 버튼 설정으로 변경
+        setupPanicButton() // 👈 함수명 변경
     }
 
-    // 🔔 [추가] 테스트 버튼 클릭 리스너 구현
-    private fun setupTestAlarmButton() {
+    // 🔔 [수정] 긴급 상황 비상약 알람 버튼으로 변경 (개인 정보 활용: 자낙스 0.25mg)
+    private fun setupPanicButton() {
         binding.testAlarmButton.setOnClickListener {
-            val testIntent = Intent(this, AlarmFullscreenActivity::class.java).apply {
-                // 테스트 ID 999 사용 (DB에 없는 ID여도 테스트는 가능)
-                putExtra("REMINDER_ID", 999)
-                putExtra("CATEGORY", "비상약")
-                // 저장된 정보를 활용하여 자낙스 0.25mg로 테스트 메시지 설정
-                putExtra("MEDICATION_NAME", "자낙스 0.25mg (공황 비상약)")
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            startActivity(testIntent)
+            // 긴급 상황 확인 다이얼로그 추가
+            AlertDialog.Builder(this)
+                .setTitle("🚨 긴급 비상약 요청")
+                .setMessage("자낙스 0.25mg (공황 비상약) 알람을 실행하시겠어요?") // 👈 확인 메시지 추가
+                .setPositiveButton("예, 실행합니다") { _, _ ->
+                    val emergencyIntent = Intent(this, AlarmFullscreenActivity::class.java).apply {
+                        // 테스트 ID 999 사용 (DB에 없는 ID여도 테스트는 가능)
+                        putExtra("REMINDER_ID", 999)
+                        putExtra("CATEGORY", "비상약")
+                        // 저장된 정보를 활용하여 자낙스 0.25mg로 메시지 설정
+                        putExtra("MEDICATION_NAME", "자낙스 0.25mg (공황 비상약)") //
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(emergencyIntent)
+                }
+                .setNegativeButton("취소", null)
+                .show()
         }
     }
 
@@ -170,3 +181,4 @@ class MainActivity : AppCompatActivity() {
             .commitAllowingStateLoss()
     }
 }
+// 수정 끝: hisabori/kkobak-kkobak/Kkobak-kkobak-29057115cdcc12e9d4b942881ac29951e9270d0a/app/src/main/java/com/example/kkobakkobak/ui/main/MainActivity.kt
