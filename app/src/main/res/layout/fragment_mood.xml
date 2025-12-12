@@ -13,72 +13,65 @@
         android:layout_height="match_parent"
         android:background="?android:attr/windowBackground"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp"> <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" app:cardBackgroundColor="?attr/colorSurface"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"  app:strokeColor="?attr/colorOutline" app:strokeWidth="1dp"> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_mood_neutral"
+                app:tint="?attr/colorPrimary"
+                android:contentDescription="기분 아이콘" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:text="오늘의 기분 관리"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+        <Button
+            android:id="@+id/btn_add_log_mood_tab"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" android:text="📝 기분 로그 추가하기"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.TonalButton" />
 
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_mood_neutral"
-                        app:tint="?attr/colorPrimary"
-                        android:contentDescription="기분 아이콘" />
+        <Button
+            android:id="@+id/btn_view_history_mood_tab"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" android:text="📊 지난 기록 보기"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+        <Button
+            android:id="@+id/btn_record_mood"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" android:text="✨ 지금 기분 기록하기"
+            android:textSize="16sp"
+            style="@style/Widget.Material3.Button.TonalButton" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="오늘의 기분 관리"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="12dp" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_add_log_mood_tab"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="📝 기분 로그 추가하기"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.Material3.Button.TonalButton" />
-
-                <Button
-                    android:id="@+id/btn_view_history_mood_tab"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="📊 지난 기록 보기"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton" />
-                <Button
-                    android:id="@+id/btn_record_mood"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="✨ 지금 기분 기록하기"
-                    android:textSize="16sp"
-                    style="@style/Widget.Material3.Button.TonalButton" />
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mood_chart_container"
@@ -86,63 +79,60 @@
             android:layout_height="match_parent"
             app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            android:layout_marginTop="8dp">
+            app:cardElevation="0dp" app:strokeColor="?attr/colorOutline" app:strokeWidth="1dp" android:layout_marginTop="0dp"> <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:animateLayoutChanges="true">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/chart_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp"
-                android:animateLayoutChanges="true">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/chart_layout"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="📈 기분 변화 추이"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="16dp"/>
-
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/mood_line_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/empty_state_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:visibility="gone">
-
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/empty_state_lottie"
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
-                        app:lottie_rawRes="@raw/empty_box"
-                        app:lottie_autoPlay="true"
-                        app:lottie_loop="true"
-                        app:lottie_speed="0.8"/> <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="아직 기록된 기분이 없어요.\n오늘 하루는 어떠셨나요? 😊"
-                    android:gravity="center"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="16sp"
-                    android:lineSpacingExtra="4dp"
-                    android:layout_marginTop="16dp"/>
+                    android:text="📈 기분 변화 추이"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"/>
 
-                </LinearLayout>
-            </RelativeLayout>
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/mood_line_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/empty_state_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/empty_state_lottie"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    app:lottie_rawRes="@raw/empty_box"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_speed="0.8"/> <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아직 기록된 기분이 없어요.\n오늘 하루는 어떠셨나요? 😊"
+                android:gravity="center"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="16sp"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginTop="16dp"/>
+
+            </LinearLayout>
+        </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

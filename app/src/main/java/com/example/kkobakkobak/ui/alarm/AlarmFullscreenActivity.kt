@@ -139,7 +139,7 @@ class AlarmFullscreenActivity : Activity() {
         scope.launch {
             val reminder = db.medicationIntakeDao().getReminderById(reminderId)
             if (reminder != null) {
-                scheduler.scheduleSnooze(reminder, minutes)
+              scheduler.scheduleSnooze(reminder, minutes)
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@AlarmFullscreenActivity, "${minutes}분 뒤 다시 알릴게.", Toast.LENGTH_SHORT).show()
