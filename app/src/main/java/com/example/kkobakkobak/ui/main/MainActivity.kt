@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                         putExtra("REMINDER_ID", 999)
                         putExtra("CATEGORY", "비상약")
                         // 저장된 정보를 활용하여 자낙스 0.25mg로 메시지 설정
-                        putExtra("MEDICATION_NAME", "자낙스 0.25mg (공황 비상약)") //
+                        putExtra("MEDICATION_NAME", "자낙스 0.25mg (공황 비상약)")
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                     startActivity(emergencyIntent)

@@ -22,12 +22,14 @@ import android.content.Intent // 👈 import 추가
 import android.net.Uri // 👈 import 추가
 import android.widget.Button // 👈 import 추가
 
+// 수정 시작: ScheduleItem에 주소 필드 추가
 data class ScheduleItem(
     val day: String,
     val time: String,
     val content: String,
     val address: String = "" // 👈 주소 필드 추가 (길찾기용)
 )
+// 수정 끝: ScheduleItem에 주소 필드 추가
 
 class PathFragment : Fragment() {
 
@@ -85,6 +87,7 @@ class PathFragment : Fragment() {
                 val address = addressInput.text.toString() // 👈 주소 가져오기
 
                 if (day.isNotBlank() && time.isNotBlank() && content.isNotBlank()) {
+                    // 주소는 비어있어도 추가 가능하게 변경
                     val newItem = ScheduleItem(day, time, content, address) // 주소 포함해서 저장
                     scheduleList.add(newItem)
                     showSchedule()
