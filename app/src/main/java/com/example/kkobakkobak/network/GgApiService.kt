@@ -1,21 +1,29 @@
 package com.example.kkobakkobak.network
 
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.example.kkobakkobak.data.model.Ggmindmedinst
+import com.example.kkobakkobak.data.model.MedicationLog
 import retrofit2.Response
-import com.example.kkobakkobak.data.model.Ggmindmedinst // 👈 Unresolved reference 해결!
+import retrofit2.http.*
 
-// 이 인터페이스는 MyRepository에서 사용하는 API 함수를 정의합니다.
 interface GgApiService {
 
-    // MyRepository.kt에서 호출하는 getInpatientStatus 함수를 정의합니다.
-    // 여기서 사용하는 매개변수 이름(apiKey, page, perPage)이 MyRepository와 일치해야 합니다.
-    @GET("getInpatientStatus") // 👈 실제 API 엔드포인트로 수정하세요.
+    @GET("getInpatientStatus")
     suspend fun getInpatientStatus(
         @Query("apiKey") apiKey: String,
         @Query("page") page: Int,
         @Query("perPage") perPage: Int
-    ): Response<Ggmindmedinst> // 👈 문법적으로 깔끔하게 정리
+    ): Response<Ggmindmedinst>
 
-    // 필요한 경우 다른 API 함수도 여기에 추가하세요.
+    // --- 투약 기록 관련 서버 API (예시 경로) ---
+
+    @POST("medication/log")
+    suspend fun saveMedicationLog(
+        @Header("Authorization") token: String,
+        @Body log: MedicationLog
+    ): Response<MedicationLog>
+
+    @GET("medication/logs")
+    suspend fun getMedicationLogs(
+        @Header("Authorization") token: String
+    ): Response<List<MedicationLog>>
 }

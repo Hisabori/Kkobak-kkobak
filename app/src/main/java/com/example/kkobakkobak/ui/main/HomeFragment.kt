@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
         // ✅ 데이터 로드 & Now Bar 실행
         val db = AppDatabase.getDatabase(requireContext())
         lifecycleScope.launch {
-            val todayIntakes = db.medicationIntakeDao().getTodayIntakeList()
+            val todayIntakes = db.medicationIntakeDao().getTodayIntakeList(java.time.LocalDate.now().toString())
             val takenCount = todayIntakes.size
 
             val statusMessage = if (takenCount > 0) {

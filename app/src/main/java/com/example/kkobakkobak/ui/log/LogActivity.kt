@@ -1,4 +1,5 @@
-package com.example.kkobakkobak.ui.log;
+package com.example.kkobakkobak.ui.log
+
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -7,28 +8,26 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.kkobakkobak.data.database.AppDatabase
-import com.example.kkobakkobak.data.model.MedicationLog
 import com.example.kkobakkobak.R
+import com.example.kkobakkobak.data.database.AppDatabase // 💡 base 대신 AppDatabase 임포트
+import com.example.kkobakkobak.data.model.MedicationLog
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.example.kkobakkobak.data.dao.MedicationLogDao
 
-//abstract class  LogActivity : AppCompatActivity() {
-
-    class  LogActivity : AppCompatActivity() {
+class LogActivity : AppCompatActivity() {
 
     private var selectedMood = 0
-    private lateinit var db: AppDatabase
+    private lateinit var db: AppDatabase // 💡 base -> AppDatabase 로 수정
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        db = AppDatabase.Companion.getDatabase(this)
+        // 💡 base -> AppDatabase 로 수정
+        db = AppDatabase.getDatabase(this)
 
         val btnMoodGood: ImageButton = findViewById(R.id.btn_mood_good)
         val btnMoodNeutral: ImageButton = findViewById(R.id.btn_mood_neutral)
@@ -72,5 +71,4 @@ import com.example.kkobakkobak.data.dao.MedicationLogDao
         }
         return super.onOptionsItemSelected(item)
     }
-    //abstract fun medicationLogDao(): MedicationLogDao
 }

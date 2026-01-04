@@ -13,13 +13,12 @@ class AlarmScheduler(private val context: Context) {
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    // MedicationReminder 객체를 받아 알람 스케줄링 (기존 로직)
     fun schedule(reminder: MedicationReminder) {
-        val requestCode = reminder.id
+        val requestCode = reminder.id.toInt() // 💡 Long을 Int로 변환
 
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("CATEGORY", reminder.category)
-            putExtra("MEDICATION_NAME", reminder.medicationName)
+            putExtra("MEDICATION_NAME", reminder.medicineName) // 💡 medicineName으로 수정
             putExtra("REMINDER_ID", reminder.id)
         }
 
@@ -30,9 +29,14 @@ class AlarmScheduler(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // 💡 time 문자열(HH:mm)을 시, 분으로 파싱
+        val timeParts = reminder.time.split(":")
+        val hour = timeParts.getOrNull(0)?.toInt() ?: 0
+        val minute = timeParts.getOrNull(1)?.toInt() ?: 0
+
         val alarmTime = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, reminder.hour)
-            set(Calendar.MINUTE, reminder.minute)
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
 
@@ -47,21 +51,20 @@ class AlarmScheduler(private val context: Context) {
                 alarmTime.timeInMillis,
                 pendingIntent
             )
-            Log.d("AlarmScheduler", "Scheduled alarm for ${reminder.category} at ${reminder.hour}:${reminder.minute}, ID: $requestCode")
+            Log.d("AlarmScheduler", "Scheduled alarm for ${reminder.medicineName} at $hour:$minute")
         } catch (e: SecurityException) {
-            Log.e("AlarmScheduler", "Failed to schedule alarm due to security exception: ${e.message}")
+            Log.e("AlarmScheduler", "Security error: ${e.message}")
         }
     }
 
-    // 🔔 [추가] 스누즈 알람 스케줄링 함수
     fun scheduleSnooze(reminder: MedicationReminder, delayMinutes: Int) {
-        val requestCode = reminder.id + 1000
+        val requestCode = reminder.id.toInt() + 1000 // 💡 Int 변환
 
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("CATEGORY", reminder.category)
-            putExtra("MEDICATION_NAME", reminder.medicationName)
+            putExtra("MEDICATION_NAME", reminder.medicineName) // 💡 medicineName으로 수정
             putExtra("REMINDER_ID", reminder.id)
-            putExtra("IS_SNOOZE", true) // 스누즈 알람임을 표시
+            putExtra("IS_SNOOZE", true)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -75,31 +78,19 @@ class AlarmScheduler(private val context: Context) {
             add(Calendar.MINUTE, delayMinutes)
         }
 
-        try {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                snoozeTime.timeInMillis,
-                pendingIntent
-            )
-            Log.d("AlarmScheduler", "Scheduled snooze alarm for ${reminder.category} in ${delayMinutes} mins, Snooze ID: $requestCode")
-        } catch (e: SecurityException) {
-            Log.e("AlarmScheduler", "Failed to schedule snooze alarm due to security exception: ${e.message}")
-        }
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            snoozeTime.timeInMillis,
+            pendingIntent
+        )
     }
 
-
-    // MedicationReminder 객체를 받아 알람 취소 (기존 로직)
     fun cancel(reminder: MedicationReminder) {
-        val requestCode = reminder.id
+        val requestCode = reminder.id.toInt() // 💡 Int 변환
         val intent = Intent(context, AlarmReceiver::class.java)
-
         val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            requestCode,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         alarmManager.cancel(pendingIntent)
-        Log.d("AlarmScheduler", "Cancelled alarm for category: ${reminder.category}, ID: $requestCode")
     }
 }

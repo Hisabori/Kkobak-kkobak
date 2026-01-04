@@ -24,9 +24,12 @@ class MedicationHistoryAdapter(private val intakes: List<MedicationIntake>) :
     }
 
     override fun onBindViewHolder(holder: IntakeViewHolder, position: Int) {
+        // 1. 리스트(intakes)에서 하나를 꺼내 'intake'라고 이름 짓기
         val intake = intakes[position]
-        holder.medName.text = intake.medicationName  // 🔧 수정됨
-        holder.time.text = DateUtils.formatTimestamp(intake.timestamp)
+
+        // 2. 필드명 맞추기 (medicineName, date, time)
+        holder.medName.text = intake.medicineName
+        holder.time.text = "${intake.date} ${intake.time}"
     }
 
     override fun getItemCount(): Int = intakes.size

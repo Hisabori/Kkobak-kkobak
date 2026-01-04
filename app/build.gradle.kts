@@ -1,18 +1,12 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android") //version "1.9.24"
-    //id("com.google.devtools.ksp") -> kapt로 변경
-    id("org.jetbrains.kotlin.kapt")
-
-
-    // id("com.google.gms.google-services")
-    //alias(libs.plugins.composeComfiler)
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.kkobakkobak"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.kkobakkobak"
@@ -20,17 +14,15 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
         buildConfigField("boolean", "SHOW_SCHEDULE", "false")
-        buildConfigField("String", "GG_API_KEY", "\"${properties["GG_API_KEY"]}\"")
+        buildConfigField("String", "GG_API_KEY", "\"${project.findProperty("GG_API_KEY") ?: ""}\"")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug { isMinifyEnabled = false }
     }
@@ -39,9 +31,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions { jvmTarget = "17"
-        freeCompilerArgs =
-            listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
+
+    kotlinOptions {
+        jvmTarget = "17"
+
+        // 💡 핵심: Kotlin 1.9.24와 Compose Compiler 버전이 살짝 안 맞아도 강제로 빌드하게 함
+        freeCompilerArgs += listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        )
     }
 
     buildFeatures {
@@ -50,73 +48,48 @@ android {
         buildConfig = true
     }
 
-
-    repositories {
-        mavenCentral()
-        google()
-        maven { url = uri("https://jitpack.io") }
+    composeOptions {
+        // Kotlin 1.9.24와 가장 가까운 버전으로 설정
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
+}
 
-    dependencies {
-        // 코루틴
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+dependencies {
+    // Room (KSP 기반 최신 설정)
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 
-        implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-        //kapt로 변경
-        val room = "2.8.0"
-        implementation("androidx.room:room-ktx:$room")
-        kapt("androidx.room:room-compiler:$room")
+    // Retrofit & Network
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-        // Retrofit (최신 안정 버전으로 업데이트)
-        implementation("com.squareup.retrofit2:retrofit:3.0.0")
-        implementation("com.squareup.retrofit2:converter-simplexml:3.0.0")
-        implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-        implementation("com.google.code.gson:gson:2.13.2")
-        implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
+    // AndroidX & UI 기반
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
 
-        // 코틀린 표준 라이브러리 (버전 고정)
-        implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20") //
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.20") // 👈 1.9.24 -> 2.2.20으로 변경
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.20") //
+    // Compose & Material 3 (BOM 관리)
+    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material3:material3")
+    implementation("com.google.android.material:material:1.12.0") // 네이티브 테마 에러 방지
 
-        // Compose Material3 (BOM으로 버전 통합)
-        implementation(platform("androidx.compose:compose-bom:2024.06.00"))
-        implementation("androidx.compose.ui:ui")
-        implementation("androidx.compose.ui:ui-tooling-preview")
-        implementation("androidx.compose.material3:material3")
-        debugImplementation("androidx.compose.ui:ui-tooling")
+    // 기타 필수 라이브러리
+    implementation("com.airbnb.android:lottie:6.3.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.biometric:biometric:1.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-        // Material Components
-        implementation("com.google.android.material:material:1.13.0")
+    implementation("com.squareup.retrofit2:converter-simplexml:2.9.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-        // 라이프사이클 및 UI
-        implementation("androidx.activity:activity-compose:1.11.0")
-        implementation("androidx.core:core-ktx:1.17.0")
-        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
-        implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
-        implementation("androidx.fragment:fragment-ktx:1.8.9")
+    implementation("androidx.fragment:fragment-ktx:1.6.2") // viewModels() 사용용
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0") // 새로고침용
 
-        // SwipeRefreshLayout
-        implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-
-        // Lottie 애니메이션
-        implementation("com.airbnb.android:lottie:6.6.9")
-
-        // MPAndroidChart
-        implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-        // WorkManager
-        implementation("androidx.work:work-runtime-ktx:2.9.0")
-
-
-        //지문인증
-        implementation("androidx.biometric:biometric:1.1.0")
-
-        val tikxml_version = "0.8.13" // 적절한 안정 버전 사용
-
-        //implementation("com.tickaroo.tikxml:core:$tikxml_version")
-
-        //--kapt("com.tickaroo.tikxml:processor:$tikxml_version")
-    }
 }

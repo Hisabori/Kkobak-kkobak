@@ -1,13 +1,10 @@
-package com.example.kkobakkobak.data.db
+package com.example.kkobakkobak.data.database
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Upsert
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface InpatientDao {
-
     @Query("SELECT * FROM inpatient ORDER BY date ASC")
     fun observeAll(): Flow<List<InpatientEntity>>
 

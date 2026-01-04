@@ -1,7 +1,7 @@
 [versions]
-agp = "8.5.1"
-kotlin = "1.9.24" # Kotlin 버전을 1.9.24로 고정
-kotlinCompilerExtension = "1.5.14" # Compose Compiler 버전은 Kotlin 버전에 맞춰서 1.5.14를 사용
+agp = "8.13.2"
+kotlin = "1.9.24"
+kotlinCompilerExtension = "1.5.14"
 
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -11,8 +11,10 @@ appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
-roomCommonJvm = "2.5.2"
-roomRuntime = "2.5.2"
+# Room 버전을 2.6.1로 올리는 게 최신 안정화 버전이야
+room = "2.6.1"
+# Kotlin 1.9.24에 맞는 KSP 버전이야
+ksp = "1.9.24-1.0.20"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -23,10 +25,15 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
-androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
+
+# Room 관련 라이브러리 정의 (이걸로 교체해!)
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-compose-comfiler = {id = "org.jetbrains.kotlin.plugin.compose", version.ref ="kotlin" }
+# Compose 컴파일러 플러그인 ID 수정됨
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -10,9 +10,7 @@ import com.example.kkobakkobak.databinding.ItemReminderBinding
 import java.util.Locale
 
 class MedicationReminderAdapter(
-    // 버튼 클릭 (설정/취소)
     private val onActionClick: (MedicationReminder) -> Unit,
-    // 항목 전체 클릭 (시간/약물 설정)
     private val onItemClick: (MedicationReminder) -> Unit
 ) : ListAdapter<MedicationReminder, MedicationReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
 
@@ -20,55 +18,57 @@ class MedicationReminderAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(reminder: MedicationReminder) {
-
-            // 아이콘 및 시간대 설정
+            // 💡 1. 아이콘 및 시간대 설정 (카테고리 한글 대응)
             when (reminder.category.lowercase(Locale.getDefault())) {
-                "morning" -> {
+                "morning", "아침" -> {
                     binding.tvCategoryIcon.text = "☀️"
                     binding.tvCategoryTitle.text = "아침"
                 }
-                "lunch" -> {
+                "lunch", "점심" -> {
                     binding.tvCategoryIcon.text = "🍚"
                     binding.tvCategoryTitle.text = "점심"
                 }
-                "dinner" -> {
+                "dinner", "저녁" -> {
                     binding.tvCategoryIcon.text = "🌙"
                     binding.tvCategoryTitle.text = "저녁"
                 }
-                "bedtime" -> {
+                "bedtime", "취침 전" -> {
                     binding.tvCategoryIcon.text = "🛏️"
                     binding.tvCategoryTitle.text = "취침 전"
                 }
                 else -> {
-                    binding.tvCategoryIcon.text = ""
-                    binding.tvCategoryTitle.text = reminder.category.replaceFirstChar { it.uppercase() }
+                    binding.tvCategoryIcon.text = "💊"
+                    binding.tvCategoryTitle.text = reminder.category
                 }
             }
 
-            // 시간 및 약물 이름 표시
-            val time = if (reminder.hour != -1 && reminder.minute != -1) {
-                String.format(Locale.getDefault(), "%02d:%02d", reminder.hour, reminder.minute)
+            // 💡 2. 시간 표시 (모델의 time: String 필드 사용)
+            // 기존의 hour, minute 대신 합쳐진 time 문자열을 그대로 사용하거나 가공함
+            val timeDisplay = if (reminder.time.isNotBlank() && reminder.time.contains(":")) {
+                reminder.time
             } else {
                 "미설정"
             }
 
-            val medicationText = reminder.medicationName.takeIf { it != "미설정" && it.isNotBlank() } ?: "약물 미설정"
+            // 💡 3. 약물 이름 표시 (medicationName -> medicineName 변경 반영)
+            val medicineText = reminder.medicineName.takeIf {
+                it != "미설정" && it.isNotBlank()
+            } ?: "약물 미설정"
 
+            // 💡 4. 활성화 상태에 따른 텍스트 설정
             binding.tvTime.text = if (reminder.isActive) {
-                "$time (${medicationText})"
+                if (timeDisplay != "미설정") "$timeDisplay ($medicineText)" else "시간 미설정"
             } else {
-                if (reminder.hour != -1) "$time (비활성화됨)" else "시간 미설정"
+                if (timeDisplay != "미설정") "$timeDisplay (비활성화됨)" else "시간 미설정"
             }
 
-            // 버튼 텍스트 설정
+            // 💡 5. 버튼 및 클릭 리스너
             binding.btnSet.text = if (reminder.isActive) "취소" else "설정"
 
-            // 리스너 연결
             binding.btnSet.setOnClickListener {
                 onActionClick(reminder)
             }
 
-            // 항목 전체 클릭 리스너
             binding.root.setOnClickListener {
                 onItemClick(reminder)
             }
