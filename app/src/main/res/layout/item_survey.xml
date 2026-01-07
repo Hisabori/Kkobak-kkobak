@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/card_background"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:fontFamily="@font/kkobakkobak"
+        android:text="1. 기분이 가라앉거나 우울하거나 희망이 없다고 느꼈다." />
+
+    <RadioGroup
+        android:id="@+id/rg_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <RadioButton android:id="@+id/rb_0" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="없음" android:textColor="@color/white" android:buttonTint="@color/white" />
+        <RadioButton android:id="@+id/rb_1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="1주" android:textColor="@color/white" android:buttonTint="@color/white" />
+        <RadioButton android:id="@+id/rb_2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="2주" android:textColor="@color/white" android:buttonTint="@color/white" />
+        <RadioButton android:id="@+id/rb_3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="매일" android:textColor="@color/white" android:buttonTint="@color/white" />
+    </RadioGroup>
+</LinearLayout>

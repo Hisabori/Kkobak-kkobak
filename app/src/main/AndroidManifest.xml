@@ -7,6 +7,7 @@
 
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -42,7 +43,7 @@
             android:name=".ui.main.MedicationNowBarService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="dataSync">
+            android:foregroundServiceType="specialUse">
         </service>
 
         <activity-alias android:name=".ui.main.MainActivitySad" android:targetActivity=".ui.main.MainActivity" android:enabled="false" android:exported="true" android:icon="@drawable/ic_mood_bad">
