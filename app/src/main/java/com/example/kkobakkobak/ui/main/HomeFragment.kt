@@ -104,6 +104,7 @@ class HomeFragment : Fragment() {
 
     private fun startNowBarService(message: String) {
         val intent = Intent(requireContext(), MedicationNowBarService::class.java).apply {
+            action = "UPDATE_STATUS"
             putExtra("status", message)
         }
         // FOREGROUND_SERVICE_DATA_SYNC를 사용하므로 O(26) 이상에서 startForegroundService 사용

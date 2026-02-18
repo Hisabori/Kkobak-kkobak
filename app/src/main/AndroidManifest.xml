@@ -43,7 +43,7 @@
             android:name=".ui.main.MedicationNowBarService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="specialUse">
+            android:foregroundServiceType="dataSync">
         </service>
 
         <activity-alias android:name=".ui.main.MainActivitySad" android:targetActivity=".ui.main.MainActivity" android:enabled="false" android:exported="true" android:icon="@drawable/ic_mood_bad">

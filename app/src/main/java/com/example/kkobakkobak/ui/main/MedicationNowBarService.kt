@@ -20,7 +20,8 @@ class MedicationNowBarService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notification = createNotification()
+        val status = intent?.getStringExtra("status") ?: "약 복용 시간을 확인하세요."
+        val notification = createNotification(status)
 
         // Android 14 (API 34) 대응:
         // 5초 이내에 startForeground를 호출해야 하며, 타입을 명시해야 함
@@ -28,16 +29,28 @@ class MedicationNowBarService : Service() {
             startForeground(
                 NOTIFICATION_ID,
                 notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE // 용도에 맞게 선택
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             )
         } else {
             startForeground(NOTIFICATION_ID, notification)
         }
 
+        // 이미 실행 중인 경우 알림만 업데이트
+        if (intent?.action == "UPDATE_STATUS") {
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.notify(NOTIFICATION_ID, notification)
+        }
+
         return START_STICKY
     }
 
-    private fun createNotification(): Notification {
+    private fun createNotification(content: String): Notification {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -53,9 +66,10 @@ class MedicationNowBarService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("꼬박꼬박 알림")
-            .setContentText("약 복용 시간을 확인하세요.")
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // 아이콘 있는지 확인!
-            .setOngoing(true) // 사용자가 못 지우게 설정
+            .setContentText(content)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
             .build()
     }
 }
