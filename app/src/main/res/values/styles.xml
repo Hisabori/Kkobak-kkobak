@@ -4,7 +4,7 @@
     <style name="Widget.Kkobak.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">24dp</item>
         <item name="cardElevation">0dp</item>
-        <item name="app:strokeWidth">0dp</item>
+        <item name="strokeWidth">0dp</item>
     </style>
 
     <style name="Widget.Kkobak.Card.Primary" parent="Widget.Kkobak.Card">
@@ -13,8 +13,8 @@
 
     <style name="Widget.Kkobak.Card.Surface" parent="Widget.Kkobak.Card">
         <item name="cardBackgroundColor">?attr/colorSurface</item>
-        <item name="app:strokeColor">?attr/colorOutline</item>
-        <item name="app:strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
     <!-- Text Styles -->
