@@ -77,9 +77,9 @@ class MedicationNowBarService : Service() {
         val takeIntent = Intent(this, MedicationTakenReceiver::class.java).apply {
             action = "ACTION_TAKE_MEDICATION"
         }
-        val takePendingIntent = android.app.PendingIntent.getReceiver(
+        val takePendingIntent = PendingIntent.getReceiver(
             this, 1, takeIntent,
-            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
