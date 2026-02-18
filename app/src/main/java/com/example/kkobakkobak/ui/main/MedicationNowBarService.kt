@@ -10,6 +10,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.app.PendingIntentCompat
 import com.example.kkobakkobak.R
 import com.example.kkobakkobak.receiver.MedicationTakenReceiver
 
@@ -62,23 +63,26 @@ class MedicationNowBarService : Service() {
             manager.createNotificationChannel(channel)
         }
 
-        // 완전한 경로를 사용하여 컴파일러 오류 방지
-        val contentIntent = android.app.PendingIntent.getActivity(
+        // PendingIntentCompat을 사용하여 안전하게 인텐트 생성
+        val launchIntent = packageManager.getLaunchIntentForPackage(packageName)!!
+        val contentIntent = PendingIntentCompat.getActivity(
             this,
             0,
-            packageManager.getLaunchIntentForPackage(packageName)!!,
-            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+            launchIntent,
+            android.app.PendingIntent.FLAG_UPDATE_CURRENT,
+            false // isMutable
         )
 
         val takeIntent = Intent(this, MedicationTakenReceiver::class.java).apply {
             action = "ACTION_TAKE_MEDICATION"
         }
         
-        val takePendingIntent = android.app.PendingIntent.getReceiver(
+        val takePendingIntent = PendingIntentCompat.getReceiver(
             this,
             1,
             takeIntent,
-            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+            android.app.PendingIntent.FLAG_UPDATE_CURRENT,
+            false // isMutable
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
