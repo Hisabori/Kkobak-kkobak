@@ -77,6 +77,7 @@ class MedicationNowBarService : Service() {
             action = "ACTION_TAKE_MEDICATION"
         }
         
+        // 오타 수정: asgetReceiver -> getReceiver
         val takePendingIntent = PendingIntentCompat.getReceiver(
             this,
             1,
