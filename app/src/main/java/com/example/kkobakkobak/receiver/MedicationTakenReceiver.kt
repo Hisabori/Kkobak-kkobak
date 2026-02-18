@@ -12,6 +12,20 @@ import java.time.LocalDate
 
 class MedicationTakenReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == "ACTION_TAKE_MEDICATION") {
+            val db = AppDatabase.getDatabase(context)
+            CoroutineScope(Dispatchers.IO).launch {
+                val intake = MedicationIntake(
+                    medicineName = "빠른 복용",
+                    dosage = "1정",
+                    time = java.time.LocalTime.now().toString().substring(0, 5),
+                    date = LocalDate.now().toString()
+                )
+                db.medicationIntakeDao().insertIntake(intake)
+            }
+            return
+        }
+
         val reminderId = intent.getLongExtra("REMINDER_ID", -1L)
         val medicineName = intent.getStringExtra("MEDICATION_NAME") ?: "알 수 없는 약"
         val time = intent.getStringExtra("TIME") ?: ""

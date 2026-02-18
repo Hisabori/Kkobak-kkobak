@@ -215,12 +215,24 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        binding.btnQuickTakeInside.setOnClickListener { startActivity(Intent(requireContext(), LogActivity::class.java)) }
+        binding.btnQuickTakeInside.setOnClickListener { showPanicDialog() }
         binding.btnViewHistory.setOnClickListener { startActivity(Intent(requireContext(), LogHistoryActivity::class.java)) }
         binding.btnRecordMood.setOnClickListener { startActivity(Intent(requireContext(), RecordActivity::class.java)) }
         binding.btnViewMoodDetails.setOnClickListener {
             activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)?.selectedItemId = R.id.navigation_mood
         }
+    }
+
+    private fun showPanicDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.Theme_Kkobakkobak_Dialog)
+            .setTitle(getString(R.string.panic_dialog_title))
+            .setMessage(getString(R.string.panic_dialog_message))
+            .setPositiveButton(getString(R.string.panic_dialog_positive)) { _, _ ->
+                viewModel.recordPanicMedication()
+                Toast.makeText(context, "비상약 복용이 기록되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton(getString(R.string.panic_dialog_negative), null)
+            .show()
     }
 
     override fun onDestroyView() {

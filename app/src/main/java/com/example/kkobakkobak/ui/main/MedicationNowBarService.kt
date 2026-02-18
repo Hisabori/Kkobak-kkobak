@@ -3,6 +3,7 @@ package com.example.kkobakkobak.ui.main
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -10,7 +11,8 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.example.kkobakkobak.R // 네 프로젝트의 R 패키지 확인
+import com.example.kkobakkobak.R
+import com.example.kkobakkobak.receiver.MedicationTakenReceiver
 
 class MedicationNowBarService : Service() {
 
@@ -64,12 +66,36 @@ class MedicationNowBarService : Service() {
             manager.createNotificationChannel(channel)
         }
 
+        // 앱 실행 인텐트 (삼성 Ongoing Activity 클릭 시 대응)
+        val contentIntent = PendingIntent.getActivity(
+            this, 0,
+            packageManager.getLaunchIntentForPackage(packageName),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // 즉시 복용 버튼 인텐트
+        val takeIntent = Intent(this, MedicationTakenReceiver::class.java).apply {
+            action = "ACTION_TAKE_MEDICATION"
+        }
+        val takePendingIntent = PendingIntent.getReceiver(
+            this, 1, takeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("꼬박꼬박 알림")
             .setContentText(content)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
+            .setContentIntent(contentIntent)
+            .addAction(R.drawable.ic_check, "💊 지금 복용", takePendingIntent)
+            .apply {
+                // 삼성 Ongoing Activity를 위한 스타일 설정
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+                }
+            }
             .build()
     }
 }

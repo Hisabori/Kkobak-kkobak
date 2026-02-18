@@ -25,6 +25,10 @@
         android:fullBackupContent="false"
         tools:ignore="AllowBackup">
 
+        <!-- 삼성 Ongoing Activity 지원 -->
+        <meta-data
+            android:name="com.samsung.android.ongoing.activity.ICON"
+            android:value="ic_launcher_foreground" />
         <meta-data
             android:name="com.samsung.support.ongoing_activity"
             android:value="true" />
