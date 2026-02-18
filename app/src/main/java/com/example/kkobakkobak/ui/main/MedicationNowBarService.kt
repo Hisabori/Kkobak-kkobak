@@ -3,7 +3,6 @@ package com.example.kkobakkobak.ui.main
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -64,15 +63,16 @@ class MedicationNowBarService : Service() {
         }
 
         // FLAG_IMMUTABLE 설정 (Android 12 이상 필수)
+        // 컴파일러 오류 방지를 위해 완전한 패키지 경로(Fully Qualified Name) 사용
         val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
         } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
+            android.app.PendingIntent.FLAG_UPDATE_CURRENT
         }
 
         // 앱 실행 인텐트
         val launchIntent = packageManager.getLaunchIntentForPackage(packageName)!!
-        val contentIntent = PendingIntent.getActivity(
+        val contentIntent = android.app.PendingIntent.getActivity(
             this,
             0,
             launchIntent,
@@ -84,7 +84,7 @@ class MedicationNowBarService : Service() {
             action = "ACTION_TAKE_MEDICATION"
         }
         
-        val takePendingIntent = PendingIntent.getReceiver(
+        val takePendingIntent = android.app.PendingIntent.getReceiver(
             this,
             1,
             takeIntent,
