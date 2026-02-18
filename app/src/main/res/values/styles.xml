@@ -1,3 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common Card Style -->
+    <style name="Widget.Kkobak.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="app:strokeWidth">0dp</item>
+    </style>
+
+    <style name="Widget.Kkobak.Card.Primary" parent="Widget.Kkobak.Card">
+        <item name="cardBackgroundColor">?attr/colorPrimaryContainer</item>
+    </style>
+
+    <style name="Widget.Kkobak.Card.Surface" parent="Widget.Kkobak.Card">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="app:strokeColor">?attr/colorOutline</item>
+        <item name="app:strokeWidth">1dp</item>
+    </style>
+
+    <!-- Text Styles -->
+    <style name="TextAppearance.Kkobak.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Kkobak.Label" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:alpha">0.7</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="Widget.Kkobak.Button" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">16dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
 </resources>

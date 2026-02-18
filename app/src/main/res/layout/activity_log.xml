@@ -1,64 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="오늘의 기록 📝"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="오늘 기분은 어땠나요?"
-        android:textSize="16sp"/>
+    android:background="?attr/colorSurface"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/btn_mood_good"
-            android:layout_width="60dp"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘의 기록 📝"
+            style="@style/TextAppearance.Kkobak.Title"
+            android:layout_marginBottom="24dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Kkobak.Card.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오늘 기분은 어땠나요?"
+                    style="@style/TextAppearance.Kkobak.Label"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:layout_marginBottom="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <ImageButton
+                        android:id="@+id/btn_mood_good"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_mood_good"
+                        android:scaleType="fitCenter"
+                        android:padding="8dp"/>
+                    <ImageButton
+                        android:id="@+id/btn_mood_neutral"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginStart="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_mood_neutral"
+                        android:scaleType="fitCenter"
+                        android:padding="8dp"/>
+                    <ImageButton
+                        android:id="@+id/btn_mood_bad"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginStart="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_mood_bad"
+                        android:scaleType="fitCenter"
+                        android:padding="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Kkobak.Card.Surface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="메모"
+                    style="@style/TextAppearance.Kkobak.Label"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/et_memo"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:hint="간단한 메모를 남겨보세요..."
+                    android:gravity="top"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="?attr/colorOnSurface"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_log"
+            style="@style/Widget.Kkobak.Button"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mood_good" />
-        <ImageButton
-            android:id="@+id/btn_mood_neutral"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mood_neutral" />
-        <ImageButton
-            android:id="@+id/btn_mood_bad"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mood_bad" />
+            android:text="저장하기"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"/>
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/et_memo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:hint="간단한 메모를 남겨보세요..."
-        android:gravity="top"
-        android:background="@null"/>
-
-    <Button
-        android:id="@+id/btn_save_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="저장하기" />
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
