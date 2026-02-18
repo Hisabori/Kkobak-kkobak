@@ -3,6 +3,7 @@ package com.example.kkobakkobak.ui.main
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -62,36 +63,25 @@ class MedicationNowBarService : Service() {
             manager.createNotificationChannel(channel)
         }
 
-        // FLAG_IMMUTABLE 설정 (Android 12 이상 필수)
-        // 컴파일러 오류 방지를 위해 완전한 패키지 경로(Fully Qualified Name) 사용
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+        // 플래그 값을 명시적으로 Int로 선언
+        val pendingFlags: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         } else {
-            android.app.PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT
         }
 
-        // 앱 실행 인텐트
+        // 1. 앱 실행 인텐트 생성
         val launchIntent = packageManager.getLaunchIntentForPackage(packageName)!!
-        val contentIntent = android.app.PendingIntent.getActivity(
-            this,
-            0,
-            launchIntent,
-            flags
-        )
+        val contentIntent = PendingIntent.getActivity(this, 0, launchIntent, pendingFlags)
 
-        // 즉시 복용 버튼 인텐트
+        // 2. 즉시 복용 버튼 인텐트 생성
         val takeIntent = Intent(this, MedicationTakenReceiver::class.java).apply {
             action = "ACTION_TAKE_MEDICATION"
         }
-        
-        val takePendingIntent = android.app.PendingIntent.getReceiver(
-            this,
-            1,
-            takeIntent,
-            flags
-        )
+        val takePendingIntent = PendingIntent.getReceiver(this, 1, takeIntent, pendingFlags)
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        // 3. 알림 빌드
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("꼬박꼬박 알림")
             .setContentText(content)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -99,11 +89,11 @@ class MedicationNowBarService : Service() {
             .setOnlyAlertOnce(true)
             .setContentIntent(contentIntent)
             .addAction(R.drawable.ic_check, "💊 지금 복용", takePendingIntent)
-            .apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-                }
-            }
-            .build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+        }
+
+        return builder.build()
     }
 }
