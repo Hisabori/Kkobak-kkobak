@@ -4,6 +4,10 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.getReceiver
+import android.app.PendingIntent.getActivity
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -67,19 +71,19 @@ class MedicationNowBarService : Service() {
         }
 
         // 앱 실행 인텐트 (삼성 Ongoing Activity 클릭 시 대응)
-        val contentIntent = PendingIntent.getActivity(
+        val contentIntent = getActivity(
             this, 0,
-            packageManager.getLaunchIntentForPackage(packageName),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            packageManager.getLaunchIntentForPackage(packageName)!!,
+            FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
         )
 
         // 즉시 복용 버튼 인텐트
         val takeIntent = Intent(this, MedicationTakenReceiver::class.java).apply {
             action = "ACTION_TAKE_MEDICATION"
         }
-        val takePendingIntent = PendingIntent.getReceiver(
+        val takePendingIntent = getReceiver(
             this, 1, takeIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
