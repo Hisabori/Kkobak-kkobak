@@ -159,7 +159,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun animateCards() {
-        val views = listOf(binding.cardStreak, binding.cardMedication, binding.cardMood, binding.cardTip)
+        // XML에 정의된 실제 ID로 수정: cardMedication, moodReportSummaryCard, cardTip
+        val views = listOf(binding.cardMedication, binding.moodReportSummaryCard, binding.cardTip)
         views.forEachIndexed { index, view ->
             view.alpha = 0f
             view.translationY = 50f
