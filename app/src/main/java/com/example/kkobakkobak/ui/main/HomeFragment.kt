@@ -16,9 +16,11 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.kkobakkobak.R
-import com.example.kkobakkobak.data.database.AppDatabase
 import com.example.kkobakkobak.databinding.FragmentHomeBinding
 import com.example.kkobakkobak.ui.history.LogHistoryActivity
 import com.example.kkobakkobak.ui.log.LogActivity
@@ -31,6 +33,7 @@ import java.util.concurrent.Executor
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
@@ -75,21 +78,11 @@ class HomeFragment : Fragment() {
         }
 
         // ✅ 데이터 로드 & Now Bar 실행
-        val db = AppDatabase.getDatabase(requireContext())
-        lifecycleScope.launch {
-            val todayIntakes = db.medicationIntakeDao().getTodayIntakeList(java.time.LocalDate.now().toString())
-            val takenCount = todayIntakes.size
-
-            val statusMessage = if (takenCount > 0) {
-                "오늘 ${takenCount}회 복용 완료! 🔥"
-            } else {
-                "오늘 약 챙겨 드셨나요? 💪"
-            }
-            binding.tvStreak.text = statusMessage
-
-            // 서비스 시작
-            startNowBarService(statusMessage)
-        }
+        observeViewModel()
+        viewModel.loadTodayIntake()
+        
+        // 카드 애니메이션 추가
+        animateCards()
 
         // ✅ 꿀팁 & 버튼 연결
         loadDailyHealthTip()
@@ -148,26 +141,55 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.todayIntakeCount.collect { count ->
+                    val statusMessage = if (count > 0) {
+                        getString(R.string.home_status_taken_format, count)
+                    } else {
+                        getString(R.string.home_status_not_taken)
+                    }
+                    binding.tvStreak.text = statusMessage
+                    startNowBarService(statusMessage)
+                }
+            }
+        }
+    }
+
+    private fun animateCards() {
+        val views = listOf(binding.cardStreak, binding.cardMedication, binding.cardMood, binding.cardTip)
+        views.forEachIndexed { index, view ->
+            view.alpha = 0f
+            view.translationY = 50f
+            view.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(500)
+                .setStartDelay(index * 100L)
+                .start()
+        }
+    }
+
     private fun setupBiometricAuth() {
         executor = ContextCompat.getMainExecutor(requireContext())
-        // BiometricPrompt 초기화 시 Fragment(this) 대신 Activity(requireActivity())를 owner로 사용
         biometricPrompt = BiometricPrompt(requireActivity(), executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     removeBlur(binding.root)
                     binding.root.setOnClickListener(null)
-                    Toast.makeText(context, "안녕! 오늘도 파이팅!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.biometric_success_greeting), Toast.LENGTH_SHORT).show()
                 }
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
                     if (errorCode !in listOf(BiometricPrompt.ERROR_USER_CANCELED, BiometricPrompt.ERROR_NEGATIVE_BUTTON)) {
-                        Toast.makeText(context, "실페함: $errString", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.biometric_error_format, errString), Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(context, "너 맞니?", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.biometric_failed_message), Toast.LENGTH_SHORT).show()
                 }
             })
 

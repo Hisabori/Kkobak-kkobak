@@ -29,5 +29,15 @@
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
     <color name="accent_blue">#2196F3</color>
+    
+    <!-- Gaemsung Colors -->
+    <color name="gaemsung_pink">#FFD1DC</color>
+    <color name="gaemsung_yellow">#FFF9C4</color>
+    <color name="gaemsung_purple">#E1BEE7</color>
+    <color name="gaemsung_mint">#B2DFDB</color>
+    <color name="gaemsung_peach">#FFCCBC</color>
+    <color name="gaemsung_sky">#B3E5FC</color>
+    <color name="gaemsung_gray">#ECEFF1</color>
+    <color name="gaemsung_text">#455A64</color>
 
 </resources>

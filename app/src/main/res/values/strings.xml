@@ -97,5 +97,14 @@
     <string name="inpatient_loading">로딩 중...</string>
     <string name="inpatient_load_failed">로드 실패</string>
     <string name="empty_state_message">아직 기분 기록이 없네요.\n오늘의 기분은 어떠셨나요? 😊</string>
+    <string name="home_status_taken_format">오늘 %1$d회 복용 완료! 🔥</string>
+    <string name="home_status_not_taken">오늘 약 챙겨 드셨나요? 💪</string>
+    <string name="biometric_success_greeting">안녕! 오늘도 파이팅!</string>
+    <string name="biometric_failed_message">너 맞니?</string>
+    <string name="biometric_error_format">실패함: %1$s</string>
+    <string name="panic_dialog_title">🚨 긴급 비상약 요청</string>
+    <string name="panic_dialog_message">자낙스 0.25mg (공황 비상약) 알람을 실행하시겠어요?</string>
+    <string name="panic_dialog_positive">예, 실행합니다</string>
+    <string name="panic_dialog_negative">취소</string>
 
 </resources>

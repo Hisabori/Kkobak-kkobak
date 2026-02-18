@@ -60,21 +60,19 @@ class MainActivity : AppCompatActivity() {
     private fun setupPanicButton() {
         binding.testAlarmButton.setOnClickListener {
             // 긴급 상황 확인 다이얼로그 추가
-            AlertDialog.Builder(this)
-                .setTitle("🚨 긴급 비상약 요청")
-                .setMessage("자낙스 0.25mg (공황 비상약) 알람을 실행하시겠어요?") // 👈 확인 메시지 추가
-                .setPositiveButton("예, 실행합니다") { _, _ ->
+            AlertDialog.Builder(this, R.style.Theme_Kkobakkobak_Dialog) // 커스텀 스타일 적용 (있을 경우)
+                .setTitle(getString(R.string.panic_dialog_title))
+                .setMessage(getString(R.string.panic_dialog_message))
+                .setPositiveButton(getString(R.string.panic_dialog_positive)) { _, _ ->
                     val emergencyIntent = Intent(this, AlarmFullscreenActivity::class.java).apply {
-                        // 테스트 ID 999 사용 (DB에 없는 ID여도 테스트는 가능)
                         putExtra("REMINDER_ID", 999)
                         putExtra("CATEGORY", "비상약")
-                        // 저장된 정보를 활용하여 자낙스 0.25mg로 메시지 설정
                         putExtra("MEDICATION_NAME", "자낙스 0.25mg (공황 비상약)")
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                     startActivity(emergencyIntent)
                 }
-                .setNegativeButton("취소", null)
+                .setNegativeButton(getString(R.string.panic_dialog_negative), null)
                 .show()
         }
     }
@@ -177,8 +175,9 @@ class MainActivity : AppCompatActivity() {
     // Fragment 교체 헬퍼 함수
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
             .replace(R.id.fragment_container, fragment)
-            .commitAllowingStateLoss()
+            .commit()
     }
 }
 // 수정 끝: hisabori/kkobak-kkobak/Kkobak-kkobak-29057115cdcc12e9d4b942881ac29951e9270d0a/app/src/main/java/com/example/kkobakkobak/ui/main/MainActivity.kt

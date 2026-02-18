@@ -36,4 +36,15 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="Theme.Kkobakkobak.Dialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowBackground">@drawable/rounded_corner_card</item>
+        <item name="android:windowTitleStyle">@style/DialogTitleStyle</item>
+        <item name="colorAccent">@color/gaemsung_pink</item>
+    </style>
+
+    <style name="DialogTitleStyle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/gaemsung_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
